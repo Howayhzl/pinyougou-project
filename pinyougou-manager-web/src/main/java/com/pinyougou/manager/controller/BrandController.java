@@ -8,6 +8,8 @@ import com.alibaba.dubbo.config.annotation.Reference;
 import com.pinyougou.pojo.TbBrand;
 import com.pinyougou.sellergoods.service.BrandService;
 import entity.PageResult;
+import entity.Result;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,5 +29,15 @@ public class BrandController {
 	public PageResult findPage(int page,int rows){
 		return brandService.findPage(page,rows);
 	}
-	
+
+	@RequestMapping("/add")
+	public Result addBrand(@RequestBody TbBrand brand){
+		try {
+			brandService.addBrand(brand);
+			return new Result("添加成功",true);
+		}catch (Exception e){
+			return new Result("添加失败",false);
+		}
+	}
+
 }
