@@ -55,4 +55,19 @@ public class BrandController {
 		return 	brandService.findOne(id);
 	}
 
+	/**
+	 * 批量删除
+	 * @param ids
+	 * @return
+	 */
+	@RequestMapping("/delete")
+	public Result deleteBrand(Long []ids){
+		try {
+			brandService.delete(ids);
+			return new Result("删除成功",true);
+		}catch (Exception e){
+			return new Result("删除失败",false);
+		}
+	}
+
 }

@@ -91,7 +91,35 @@
 				)
 			};
 
+		//删除
 
+			$scope.selectIds=[];//用户勾选的ID集合
+			//用户勾选复选框
+			$scope.updateSelection=function($event,id){
+				if($event.target.checked){
+					$scope.selectIds.push(id);//push向集合添加元素
+				}else{
+					var index= $scope.selectIds.indexOf(id);//查找值的 位置
+					$scope.selectIds.splice(index,1);//参数1：移除的位置 参数2：移除的个数
+				}
+			};
+
+
+		//批量删除
+			//删除
+			$scope.delete=function(){
+				if(confirm('确定要删除吗？')){
+					$http.get('../brand/delete.do?ids='+$scope.selectIds).success(
+							function(response){
+								if(response.success){
+									$scope.reloadList();//刷新
+								}else{
+									alert(response.message);
+								}
+							}
+					);
+				}
+			}
 
 
 		});
@@ -119,7 +147,7 @@
                                 <div class="form-group form-inline">
                                     <div class="btn-group">
                                         <button type="button" class="btn btn-default" title="新建" data-toggle="modal" data-target="#editModal"  ng-click="entity={}"><i class="fa fa-file-o"></i> 新建</button>
-                                        <button type="button" class="btn btn-default" title="删除" ><i class="fa fa-trash-o"></i> 删除</button>           
+                                        <button type="button" class="btn btn-default" title="删除"  ng-click="delete()"><i class="fa fa-trash-o"></i> 删除</button>
                                         <button type="button" class="btn btn-default" title="刷新" onclick="window.location.reload();"><i class="fa fa-refresh"></i> 刷新</button>
                                     </div>
                                 </div>
@@ -146,7 +174,7 @@
 			                      </thead>
 			                      <tbody>
 			                          <tr ng-repeat="entity in list">
-			                              <td><input  type="checkbox" ></td>
+			                              <td><input  type="checkbox" ng-click="updateSelection($event,entity.id)" ></td>
 				                          <td>{{entity.id}}</td>
 									      <td>{{entity.name}}</td>
 		                                  <td>{{entity.firstChar}}</td>
