@@ -64,6 +64,7 @@
       </foreach>
     </where>
   </sql>
+
   <sql id="Base_Column_List" >
     id, name, first_char
   </sql>
