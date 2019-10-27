@@ -42,7 +42,7 @@ public interface SpecificationService {
 	 * @param id
 	 * @return
 	 */
-	public TbSpecification findOne(Long id);
+	public Specification findOne(Long id);
 	
 	
 	/**
@@ -64,5 +64,5 @@ public interface SpecificationService {
 	 * @param specification
 	 */
 	public void add(Specification specification);
-	
+
 }
