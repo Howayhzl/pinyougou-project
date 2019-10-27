@@ -111,7 +111,7 @@
     from tb_seller
     where seller_id = #{sellerId,jdbcType=VARCHAR}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     delete from tb_seller
     where seller_id = #{sellerId,jdbcType=VARCHAR}
   </delete>

@@ -10,7 +10,7 @@ public interface TbSellerMapper {
 
     int deleteByExample(TbSellerExample example);
 
-    int deleteByPrimaryKey(String sellerId);
+    int deleteByPrimaryKey(Long sellerId);
 
     int insert(TbSeller record);
 
