@@ -1,5 +1,8 @@
 //控制层
 app.controller('brandController' ,function($scope,$controller,brandService){
+
+    $controller('baseController',{$scope:$scope});
+
     //查询品牌列表
     $scope.findAll=function(){
         brandService.findAll().success(
@@ -18,25 +21,6 @@ app.controller('brandController' ,function($scope,$controller,brandService){
             }
         );
     };
-
-
-    //分页控件配置currentPage:当前页   totalItems :总记录数  itemsPerPage:每页记录数  perPageOptions :分页选项  onChange:当页码变更后自动触发的方法
-    $scope.paginationConf = {
-        currentPage: 1,
-        totalItems: 10,
-        itemsPerPage: 10,
-        perPageOptions: [10, 20, 30, 40, 50],
-        onChange: function(){
-            $scope.reloadList();
-        }
-    };
-
-    //刷新列表
-    $scope.reloadList=function(){
-        $scope.search( $scope.paginationConf.currentPage,$scope.paginationConf.itemsPerPage);
-    };
-
-
 
     //新增
     $scope.save = function () {
@@ -65,18 +49,6 @@ app.controller('brandController' ,function($scope,$controller,brandService){
             }
 
         )
-    };
-
-    //删除
-    $scope.selectIds=[];//用户勾选的ID集合
-    //用户勾选复选框
-    $scope.updateSelection=function($event,id){
-        if($event.target.checked){
-            $scope.selectIds.push(id);//push向集合添加元素
-        }else{
-            var index= $scope.selectIds.indexOf(id);//查找值的 位置
-            $scope.selectIds.splice(index,1);//参数1：移除的位置 参数2：移除的个数
-        }
     };
 
     //批量删除
