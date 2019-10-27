@@ -23,18 +23,18 @@ public interface SpecificationService {
 	 * @return
 	 */
 	public PageResult findPage(int pageNum, int pageSize);
-	
-	
+
+
 	/**
 	 * 增加
 	*/
 	public void add(TbSpecification specification);
-	
+
 	
 	/**
 	 * 修改
 	 */
-	public void update(TbSpecification specification);
+	public void update(Specification specification);
 	
 
 	/**
