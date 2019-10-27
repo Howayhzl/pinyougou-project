@@ -3,7 +3,7 @@ app.controller('specificationController' ,function($scope,$controller   ,specifi
 	
 	$controller('baseController',{$scope:$scope});//继承
 
-	$scope.entity = {specificationOptionList:[]};
+	//$scope.entity = {specificationOptionList:[]};
 
 	//新增规格选项行
 	$scope.addTableRow=function(){
@@ -82,6 +82,11 @@ app.controller('specificationController' ,function($scope,$controller   ,specifi
 				$scope.paginationConf.totalItems=response.total;//更新总记录数
 			}			
 		);
+	}
+
+	//删除规格选项行
+	$scope.deleteTableRow = function (index) {
+		$scope.entity.specificationOptionList.splice(index,1);
 	}
     
 });	
