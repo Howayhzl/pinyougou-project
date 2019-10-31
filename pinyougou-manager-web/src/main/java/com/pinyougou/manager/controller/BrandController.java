@@ -1,7 +1,7 @@
 package com.pinyougou.manager.controller;
 
 import java.util.List;
-
+import java.util.Map;
 
 
 import com.alibaba.dubbo.config.annotation.Reference;
@@ -80,5 +80,14 @@ public class BrandController {
 	@RequestMapping("/search")
 	public PageResult search(@RequestBody TbBrand brand,int page,int rows){
 		return  brandService.findPage(brand,page,rows);
+	}
+
+	/**
+	 * 查询下拉列表
+	 * @return
+	 */
+	@RequestMapping("/select2OptionList")
+	public List<Map> select2OptionList(){
+		return brandService.select2OptionList();
 	}
 }
