@@ -25,6 +25,9 @@
 	<!-- 分页组件结束 -->
 
 	<script type="text/javascript"src="../js/base_pagination.js"></script>
+
+	<script type="text/javascript" src="../js/angular-select2.js"></script>
+
 	<script type="text/javascript"src="../js/service/typeTemplateService.js"></script>
 	<script type="text/javascript"src="../js/controller/baseController.js"></script>
 	<script type="text/javascript"src="../js/controller/typeTemplateController.js"></script>
@@ -125,7 +128,8 @@
 		      	<tr>
 		      		<td>关联品牌</td>
 		      		<td>
-		      			
+		      			<input select2 select2-model="entity.brandIds" config="brandList"
+							   multiple placeholder="选择品牌(可多选)" class="form-control" type="text">
 		      		</td>
 		      	</tr>
 		      	<tr>
