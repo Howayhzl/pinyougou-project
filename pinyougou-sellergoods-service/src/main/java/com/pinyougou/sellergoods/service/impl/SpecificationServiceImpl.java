@@ -1,5 +1,6 @@
 package com.pinyougou.sellergoods.service.impl;
 import java.util.List;
+import java.util.Map;
 
 import com.pinyougou.mapper.TbSpecificationOptionMapper;
 import com.pinyougou.pojo.TbSpecificationOption;
@@ -157,6 +158,11 @@ public class SpecificationServiceImpl implements SpecificationService {
 			specificationOption.setSpecId(tbSpecification.getId()); //设置id
 			specificationOptionMapper.insert(specificationOption);
 		}
+	}
+
+	@Override
+	public List<Map> selectSpeclOptionList() {
+		return specificationMapper.selectSpeclOptionList();
 	}
 
 }
