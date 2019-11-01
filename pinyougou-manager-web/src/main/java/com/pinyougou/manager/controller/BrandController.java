@@ -88,6 +88,7 @@ public class BrandController {
 	 */
 	@RequestMapping("/select2OptionList")
 	public List<Map> select2OptionList(){
-		return brandService.select2OptionList();
+        List<Map> maps = brandService.select2OptionList();
+        return maps;
 	}
 }

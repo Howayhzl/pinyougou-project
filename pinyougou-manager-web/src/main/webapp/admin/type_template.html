@@ -29,6 +29,9 @@
 	<script type="text/javascript" src="../js/angular-select2.js"></script>
 
 	<script type="text/javascript"src="../js/service/typeTemplateService.js"></script>
+
+	<script type="text/javascript"src="../js/service/brandService.js"></script>
+
 	<script type="text/javascript"src="../js/controller/baseController.js"></script>
 	<script type="text/javascript"src="../js/controller/typeTemplateController.js"></script>
 
@@ -111,7 +114,7 @@
 					    
                                 
 <!-- 编辑窗口 -->
-<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" ng-init="findBrandList()">
   <div class="modal-dialog" >
 	<div class="modal-content">
 		<div class="modal-header">

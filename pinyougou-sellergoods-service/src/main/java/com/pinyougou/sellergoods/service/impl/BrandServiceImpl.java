@@ -77,7 +77,8 @@ public class BrandServiceImpl implements BrandService {
 
 	@Override
 	public List<Map> select2OptionList() {
-		return brandMapper.select2OptionList();
+        List<Map> maps = brandMapper.select2OptionList();
+        return maps;
 	}
 
 }
