@@ -99,4 +99,13 @@ app.controller('typeTemplateController' ,function($scope,$controller ,typeTempla
 		)
 	}
 
+	//新增拓展属性行
+	$scope.addTableRow = function () {
+		$scope.entity.customAttributeitems.push({})
+	}
+
+	// 删除拓展属性行
+	$scope.deleteRow = function (index) {
+		$scope.entity.customAttributeitems.splice(index,1);
+	}
 });	
