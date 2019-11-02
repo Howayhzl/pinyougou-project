@@ -27,5 +27,28 @@ app.controller('baseController',function ($scope) {
         }
     };
 
+  /*  $scope.jsonToString = function (jsonString,key) {
+        var json = JSON.parse(jsonString);
+        var value="";
+        for (var i=0; i<json.length; i++){
+            value += ","+json[i][key]
+        }
 
+        return value;
+    }*/
+
+    $scope.jsonToString=function(jsonString,key){
+
+        var json= JSON.parse(jsonString);
+        var value="";
+
+        for(var i=0;i<json.length;i++){
+            if(i>0){
+                value+=",";
+            }
+            value +=json[i][key];
+        }
+
+        return value;
+    }
 });
