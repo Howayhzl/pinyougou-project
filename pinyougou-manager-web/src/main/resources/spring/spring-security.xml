@@ -18,6 +18,9 @@
         <!--开启表单登录功能-->
         <form-login login-page="/login.html" default-target-url="/admin/index.html" authentication-failure-url="/login.html" always-use-default-target="true"/>
         <csrf disabled="true"/>
+        <headers>
+            <frame-options policy="SAMEORIGIN"/>
+        </headers>
     </http>
 
     <!--默认管理器-->
