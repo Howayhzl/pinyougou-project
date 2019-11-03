@@ -13,10 +13,12 @@ import java.util.Map;
 @RequestMapping("/login")
 public class LoginController {
 
-    @RequestMapping("name")
-    public String name(){
+    @RequestMapping("/name")
+    public Map name(){
         String name=SecurityContextHolder.getContext().getAuthentication().getName();
-        return name;
+        Map map = new HashMap();
+        map.put("loginName",name);
+        return map;
     }
 
 }
