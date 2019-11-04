@@ -31,6 +31,7 @@
     <!--默认管理器-->
     <authentication-manager>
         <authentication-provider user-service-ref="userDetailsService">
+            <password-encoder ref="encodePassword"></password-encoder>
         </authentication-provider>
     </authentication-manager>
 
@@ -43,4 +44,6 @@
     <dubbo:application name="pinyougou-shop-web" />
     <dubbo:registry address="zookeeper://192.168.25.135:2181"/>
     <dubbo:reference id="SellerService" interface="com.pinyougou.sellergoods.service.SellerService"></dubbo:reference>
+
+    <beans:bean id="encodePassword" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"></beans:bean>
 </beans:beans>
