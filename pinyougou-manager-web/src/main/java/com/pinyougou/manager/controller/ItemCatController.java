@@ -120,5 +120,5 @@ public class ItemCatController {
 	public List<TbItemCat> findByParentId(Long parentId){
 		return  itemCatService.findByParentId(parentId);
 	}
-	
+
 }
