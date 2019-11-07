@@ -53,11 +53,13 @@ app.controller('goodsController' ,function($scope,$controller,goodsService){
 
 	//新增
 	$scope.add=function(){
+		$scope.entity.goodsDesc.introduction = editor.html();
 		goodsService.add($scope.entity).success(
 			function(response){
 				if(response.success){
 					alert("新增成功")
 					$scope.entity ={};
+					editor.html('');
 				}else{
 					alert(response.message);
 				}
