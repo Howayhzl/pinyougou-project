@@ -160,6 +160,8 @@ app.controller('goodsController' ,function($scope,$controller,goodsService,uploa
 				$scope.typeTemplate = response; // 获取模板类型类
 				alert($scope.typeTemplate.brandIds)
 				$scope.typeTemplate.brandIds = JSON.parse($scope.typeTemplate.brandIds) // 在模板类型类中取出关联品牌列表
+
+				$scope.entity.goodsDesc.customAttributeItems =JSON.parse($scope.typeTemplate.customAttributeItems)
 			}
 		)
 	})
