@@ -117,6 +117,7 @@ app.controller('goodsController' ,function($scope,$controller,goodsService,uploa
 		$scope.entity.goodsDesc.itemImages.splice(index,1)
 	}
 
+	// 一级分类下拉选择框
 	$scope.selectItemCat1List = function () {
 		itemCatService.findByParentId(0).success(
 			function (response) {
@@ -124,4 +125,23 @@ app.controller('goodsController' ,function($scope,$controller,goodsService,uploa
 			}
 		)
 	}
+
+	// 二级分类下拉选择框
+	$scope.$watch('entity.goods.category1Id',function (newValue, oldValue) {
+		itemCatService.findByParentId(newValue).success(
+			function (response) {
+				$scope.selectItemCat2List = response;
+			}
+		)
+	});
+
+	// 三级分类下拉选择框
+	$scope.$watch('entity.goods.category2Id',function (newValue, oldValue) {
+		itemCatService.findByParentId(newValue).success(
+			function (response) {
+				$scope.selectItemCat3List = response;
+			}
+		)
+	})
+
 });	
