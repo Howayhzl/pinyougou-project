@@ -1,5 +1,5 @@
  //控制层 
-app.controller('goodsController' ,function($scope,$controller,goodsService,uploadService){
+app.controller('goodsController' ,function($scope,$controller,goodsService,uploadService,itemCatService){
 	
 	$controller('baseController',{$scope:$scope});//继承
 	
