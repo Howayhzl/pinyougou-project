@@ -105,4 +105,11 @@ app.controller('goodsController' ,function($scope,$controller,goodsService,uploa
 			}
 		)
 	}
+
+    $scope.entity={goods:{},goodsDesc:{itemImages:[]}};//定义页面实体结构
+	//把当前的图片实体存入图片列表
+	$scope.add_image_entity=function(){
+		$scope.entity.goodsDesc.itemImages.push($scope.image_entity);
+	}
+
 });	
