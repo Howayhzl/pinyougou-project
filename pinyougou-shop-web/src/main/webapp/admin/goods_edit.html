@@ -33,7 +33,7 @@
     
 </head>
 
-<body class="hold-transition skin-red sidebar-mini" ng-app="pinyougou" ng-controller="goodsController" >
+<body class="hold-transition skin-red sidebar-mini" ng-app="pinyougou" ng-controller="goodsController" ng-init="selectItemCat1List()" >
 
             <!-- 正文区域 -->
             <section class="content">
@@ -72,7 +72,7 @@
 		                           	  	<table>
 		                           	  		<tr>
 		                           	  			<td>
-		                           	  				<select class="form-control" >														
+		                           	  				<select class="form-control" ng-model="entity.goods.category1Id" ng-options="item.id as item.name for item in selectItemCat1List">
 		                           	  				</select>
 		                              			</td>
 		                              			<td>

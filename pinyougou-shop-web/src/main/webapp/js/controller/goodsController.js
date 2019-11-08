@@ -117,4 +117,11 @@ app.controller('goodsController' ,function($scope,$controller,goodsService,uploa
 		$scope.entity.goodsDesc.itemImages.splice(index,1)
 	}
 
+	$scope.selectItemCat1List = function () {
+		itemCatService.findByParentId(0).success(
+			function (response) {
+				$scope.selectItemCat1List = response;
+			}
+		)
+	}
 });	
