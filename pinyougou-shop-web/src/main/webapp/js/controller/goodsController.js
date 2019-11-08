@@ -1,5 +1,5 @@
  //控制层 
-app.controller('goodsController' ,function($scope,$controller,goodsService,uploadService,itemCatService){
+app.controller('goodsController' ,function($scope,$controller,goodsService,uploadService,itemCatService,typeTemplateService){
 	
 	$controller('baseController',{$scope:$scope});//继承
 	
@@ -149,6 +149,17 @@ app.controller('goodsController' ,function($scope,$controller,goodsService,uploa
 		itemCatService.findOne(newValue).success(
 			function (response) {
 				$scope.entity.goods.typeTemplateId = response.typeId;
+			}
+		)
+	})
+
+	// 获取品牌下拉列表
+	$scope.$watch('entity.goods.typeTemplateId',function (newValue, oldValue) {
+		typeTemplateService.findOne(newValue).success(
+			function (response) {
+				$scope.typeTemplate = response; // 获取模板类型类
+				alert($scope.typeTemplate.brandIds)
+				$scope.typeTemplate.brandIds = JSON.parse($scope.typeTemplate.brandIds) // 在模板类型类中取出关联品牌列表
 			}
 		)
 	})
