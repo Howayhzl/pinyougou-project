@@ -158,7 +158,6 @@ app.controller('goodsController' ,function($scope,$controller,goodsService,uploa
 		typeTemplateService.findOne(newValue).success(
 			function (response) {
 				$scope.typeTemplate = response; // 获取模板类型类
-				alert($scope.typeTemplate.brandIds)
 				$scope.typeTemplate.brandIds = JSON.parse($scope.typeTemplate.brandIds) // 在模板类型类中取出关联品牌列表
 
 				$scope.entity.goodsDesc.customAttributeItems =JSON.parse($scope.typeTemplate.customAttributeItems)
@@ -191,4 +190,30 @@ app.controller('goodsController' ,function($scope,$controller,goodsService,uploa
 			$scope.entity.goodsDesc.specificationItems.push({"attributeName":name,"attributeValue":[value]})
 		}
 	}
+
+
+	//创建SKU列表
+	$scope.createItemList=function(){
+		$scope.entity.itemList=[{spec:{},price:0,num:99999,status:'0',isDefault:'0' } ];//初始
+		var items=  $scope.entity.goodsDesc.specificationItems;
+		for(var i=0;i< items.length;i++){
+			alert($scope.entity.itemList)
+			$scope.entity.itemList = addColumn( $scope.entity.itemList,items[i].attributeName,items[i].attributeValue );
+		}
+	}
+
+	//添加列值
+	addColumn=function(list,columnName,conlumnValues){
+		var newList=[];//新的集合
+		for(var i=0;i<list.length;i++){
+			var oldRow= list[i];
+			for(var j=0;j<conlumnValues.length;j++){
+				var newRow= JSON.parse( JSON.stringify( oldRow )  );//深克隆
+				newRow.spec[columnName]=conlumnValues[j];
+				newList.push(newRow);
+			}
+		}
+		return newList;
+	}
+
 });	
