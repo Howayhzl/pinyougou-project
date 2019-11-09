@@ -106,7 +106,7 @@ app.controller('goodsController' ,function($scope,$controller,goodsService,uploa
 		)
 	}
 
-    $scope.entity={goods:{},goodsDesc:{itemImages:[]}};//定义页面实体结构
+    $scope.entity={goods:{},goodsDesc:{itemImages:[],specificationItems:[]}};//定义页面实体结构
 	//把当前的图片实体存入图片列表
 	$scope.add_image_entity=function(){
 		$scope.entity.goodsDesc.itemImages.push($scope.image_entity);
@@ -173,4 +173,22 @@ app.controller('goodsController' ,function($scope,$controller,goodsService,uploa
 		)
 
 	})
+
+	$scope.updateSpecAttribute = function ($event,name, value) {
+		var object =$scope.searchObjectByKey($scope.entity.goodsDesc.specificationItems,'attributeName',name)
+
+		if (object!=null){
+			if ($event.target.checked){
+				object.attributeValue.push(value)
+			}else { //取消勾选
+				object.attributeValue.splice(object.attributeValue.indexOf(value),1) //移除选项
+				if (object.attributeValue.length == 0){ //移除对象
+					$scope.entity.goodsDesc.specificationItems.splice($scope.entity.goodsDesc.specificationItems.indexOf(object),1)
+				}
+			}
+
+		}else {
+			$scope.entity.goodsDesc.specificationItems.push({"attributeName":name,"attributeValue":[value]})
+		}
+	}
 });	
