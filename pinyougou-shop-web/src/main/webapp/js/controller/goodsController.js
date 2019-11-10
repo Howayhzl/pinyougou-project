@@ -35,6 +35,9 @@ app.controller('goodsController' ,function($scope,$controller,$location,goodsSer
 				editor.html($scope.entity.goodsDesc.introduction)
 				// 获取商品图片
 				$scope.entity.goodsDesc.itemImages = JSON.parse($scope.entity.goodsDesc.itemImages)
+
+				// 获取扩展属性
+				$scope.entity.goodsDesc.customAttributeItems = JSON.parse($scope.entity.goodsDesc.customAttributeItems);
 			}
 		);
 	}
@@ -168,7 +171,10 @@ app.controller('goodsController' ,function($scope,$controller,$location,goodsSer
 				$scope.typeTemplate = response; // 获取模板类型类
 				$scope.typeTemplate.brandIds = JSON.parse($scope.typeTemplate.brandIds) // 在模板类型类中取出关联品牌列表
 
-				$scope.entity.goodsDesc.customAttributeItems =JSON.parse($scope.typeTemplate.customAttributeItems)
+				if ($location.search()['id']==null){
+					$scope.entity.goodsDesc.customAttributeItems =JSON.parse($scope.typeTemplate.customAttributeItems)
+				}
+
 			}
 		)
 
