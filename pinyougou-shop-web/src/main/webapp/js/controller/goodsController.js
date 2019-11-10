@@ -51,29 +51,14 @@ app.controller('goodsController' ,function($scope,$controller,$location,goodsSer
 	}
 	
 	//保存 
-	$scope.save=function(){				
-		var serviceObject;//服务层对象  				
-		if($scope.entity.id!=null){//如果有ID
+	$scope.save=function(){
+		$scope.entity.goodsDesc.introduction = editor.html();
+		if($scope.entity.goods.id!=null){//如果有ID
 			serviceObject=goodsService.update( $scope.entity ); //修改  
 		}else{
 			serviceObject=goodsService.add( $scope.entity  );//增加 
 		}				
 		serviceObject.success(
-			function(response){
-				if(response.success){
-					//重新查询 
-		        	$scope.reloadList();//重新加载
-				}else{
-					alert(response.message);
-				}
-			}		
-		);				
-	}
-
-	//新增
-	$scope.add=function(){
-		$scope.entity.goodsDesc.introduction = editor.html();
-		goodsService.add($scope.entity).success(
 			function(response){
 				if(response.success){
 					alert("新增成功")
@@ -82,11 +67,11 @@ app.controller('goodsController' ,function($scope,$controller,$location,goodsSer
 				}else{
 					alert(response.message);
 				}
-			}
-		);
+			}		
+		);				
 	}
-	
-	 
+
+
 	//批量删除 
 	$scope.dele=function(){			
 		//获取选中的复选框			
