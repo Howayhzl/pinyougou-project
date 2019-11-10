@@ -114,6 +114,10 @@ public class GoodsController {
 	 */
 	@RequestMapping("/search")
 	public PageResult search(@RequestBody TbGoods goods, int page, int rows  ){
+		// 获取商家ID
+		String name = SecurityContextHolder.getContext().getAuthentication().getName();
+		// 添加查询条件
+		goods.setSellerId(name);
 		return goodsService.findPage(goods, page, rows);		
 	}
 	
