@@ -156,6 +156,13 @@ public class GoodsServiceImpl implements GoodsService {
 		TbGoodsDesc tbGoodsDesc = tbGoodsDescMapper.selectByPrimaryKey(id);
 		goods.setGoodsDesc(tbGoodsDesc);
 
+		// 设置商品SKU列表信息
+		TbItemExample example = new TbItemExample();
+		TbItemExample.Criteria criteria = example.createCriteria();
+		criteria.andGoodsIdEqualTo(id);
+		List<TbItem> itemList = itemMapper.selectByExample(example);
+
+		goods.setItemList(itemList);
 		return goods;
 	}
 
