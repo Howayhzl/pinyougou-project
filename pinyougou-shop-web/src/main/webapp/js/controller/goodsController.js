@@ -30,7 +30,9 @@ app.controller('goodsController' ,function($scope,$controller,$location,goodsSer
 		}
 		goodsService.findOne(id).success(
 			function(response){
-				$scope.entity= response;					
+				$scope.entity= response;
+				//向富文本编辑器读取商品介绍
+				editor.html($scope.entity.goodsDesc.introduction)
 			}
 		);
 	}
