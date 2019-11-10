@@ -33,6 +33,8 @@ app.controller('goodsController' ,function($scope,$controller,$location,goodsSer
 				$scope.entity= response;
 				//向富文本编辑器读取商品介绍
 				editor.html($scope.entity.goodsDesc.introduction)
+				// 获取商品图片
+				$scope.entity.goodsDesc.itemImages = JSON.parse($scope.entity.goodsDesc.itemImages)
 			}
 		);
 	}
