@@ -38,6 +38,9 @@ app.controller('goodsController' ,function($scope,$controller,$location,goodsSer
 
 				// 获取扩展属性
 				$scope.entity.goodsDesc.customAttributeItems = JSON.parse($scope.entity.goodsDesc.customAttributeItems);
+
+				// 规格选项
+				$scope.entity.goodsDesc.specificationItems = JSON.parse($scope.entity.goodsDesc.specificationItems)
 			}
 		);
 	}
@@ -242,6 +245,22 @@ app.controller('goodsController' ,function($scope,$controller,$location,goodsSer
 				}
 			}
 		)
+	}
+
+	// 判断某规格选项是否被勾选
+	$scope.checkAttributeValue = function (specName,optionName) {
+		var items =$scope.entity.goodsDesc.specificationItems;
+		var object =$scope.searchObjectByKey(items,'attributeName',specName)
+		if (object!=null){
+			if (object.attributeValue.indexOf(optionName)>=0){ //如果能够查询到规格选项列表
+				return true
+			} else {
+				return false;
+			}
+		}else {
+			return false;
+		}
+		return true;
 	}
 
 });	
