@@ -216,4 +216,6 @@ app.controller('goodsController' ,function($scope,$controller,goodsService,uploa
 		return newList;
 	}
 
+	$scope.status = ['未审核','已审核','审核未通过','驳回']  // 商品状态
+
 });	
