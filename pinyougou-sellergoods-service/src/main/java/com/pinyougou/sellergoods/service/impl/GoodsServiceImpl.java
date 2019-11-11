@@ -89,14 +89,6 @@ public class GoodsServiceImpl implements GoodsService {
 				}
 				item.setTitle(title);
 
-				//商品分类
-				item.setCategoryid(goods.getGoods().getCategory3Id());//商品分类 三级分类
-				item.setCreateTime(new Date()); //创建日期
-				item.setUpdateTime(new Date());  //更新日期
-
-				item.setGoodsId(goods.getGoods().getId()); //商品ID
-				item.setSellerId(goods.getGoods().getSellerId()); // 商家ID
-
 				// 品牌名称
 				setItemValue(goods, item);
 
@@ -104,12 +96,12 @@ public class GoodsServiceImpl implements GoodsService {
 			}
 		}else { //没有启动规格
 			TbItem item = new TbItem();
-			item.setTitle(goods.getGoods().getGoodsName());
-			item.setPrice(goods.getGoods().getPrice());
-			item.setNum(9999);
-			item.setSpec("{}");
+			item.setTitle(goods.getGoods().getGoodsName()); // 标题
+			item.setPrice(goods.getGoods().getPrice()); // 价格
+			item.setNum(9999); // 库存数量
+			item.setSpec("{}"); // 规格
 			item.setIsDefault("1");
-			item.setCategoryid(goods.getGoods().getCategory3Id());
+			item.setStatus("1"); // 状态
 			setItemValue(goods, item);
 
 			itemMapper.insert(item);
@@ -117,6 +109,15 @@ public class GoodsServiceImpl implements GoodsService {
 	}
 
 	private void setItemValue(Goods goods, TbItem item) {
+
+		//商品分类
+		item.setCategoryid(goods.getGoods().getCategory3Id());//商品分类 三级分类
+		item.setCreateTime(new Date()); //创建日期
+		item.setUpdateTime(new Date());  //更新日期
+
+		item.setGoodsId(goods.getGoods().getId()); //商品ID
+		item.setSellerId(goods.getGoods().getSellerId()); // 商家ID
+
 		// 品牌名称
 		TbBrand brand = brandMapper.selectByPrimaryKey(goods.getGoods().getBrandId());
 		item.setBrand(brand.getName());
