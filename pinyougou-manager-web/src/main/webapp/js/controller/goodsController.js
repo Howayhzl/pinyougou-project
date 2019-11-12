@@ -111,5 +111,18 @@ app.controller('goodsController' ,function($scope,$controller,$location,goodsSer
 			}
 		)
 	}
+
+	$scope.updateDates = function (status) {
+		goodsService.updateStatus($scope.selectIds,status).success(
+			function (response) {
+				if (response.success){ //成功
+					$scope.reloadList(); //刷新
+					$scope.selectIds = []; // 清空id集合
+				}else {
+					alert(response.message)
+				}
+			}
+		)
+	}
     
 });	
