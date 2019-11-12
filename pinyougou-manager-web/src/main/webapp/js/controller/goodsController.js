@@ -1,5 +1,5 @@
  //控制层 
-app.controller('goodsController' ,function($scope,$controller,goodsService,itemCatService){
+app.controller('goodsController' ,function($scope,$controller,$location,goodsService,itemCatService){
 	
 	$controller('baseController',{$scope:$scope});//继承
 	
@@ -21,14 +21,33 @@ app.controller('goodsController' ,function($scope,$controller,goodsService,itemC
 			}			
 		);
 	}
-	
-	//查询实体 
-	$scope.findOne=function(id){				
+
+	//查询实体
+	$scope.findOne=function(){
+		var id = $location.search()['id']; // 获取参数值
+		if (id == null){
+			return ;
+		}
 		goodsService.findOne(id).success(
 			function(response){
-				$scope.entity= response;					
+				$scope.entity= response;
+				//向富文本编辑器读取商品介绍
+				editor.html($scope.entity.goodsDesc.introduction)
+				// 获取商品图片
+				$scope.entity.goodsDesc.itemImages = JSON.parse($scope.entity.goodsDesc.itemImages)
+
+				// 获取扩展属性
+				$scope.entity.goodsDesc.customAttributeItems = JSON.parse($scope.entity.goodsDesc.customAttributeItems);
+
+				// 规格选项
+				$scope.entity.goodsDesc.specificationItems = JSON.parse($scope.entity.goodsDesc.specificationItems)
+
+				//转换SKU列表中的规格对象
+				for (var i=0; i<$scope.entity.itemList.length;i++){
+					$scope.entity.itemList[i].spec = JSON.parse($scope.entity.itemList[i].spec)
+				}
 			}
-		);				
+		);
 	}
 	
 	//保存 
