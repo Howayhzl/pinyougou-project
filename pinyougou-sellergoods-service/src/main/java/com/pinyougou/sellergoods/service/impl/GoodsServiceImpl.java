@@ -69,6 +69,7 @@ public class GoodsServiceImpl implements GoodsService {
 	@Override
 	public void add(Goods goods) {
 		goods.getGoods().setAuditStatus("0");  //状态:未审核
+		goods.getGoods().setIsMarketable("1"); //状态：上架
  		goodsMapper.insert(goods.getGoods());  //添加商品基本信心
 		goods.getGoodsDesc().setGoodsId(goods.getGoods().getId()); //将商品基本信息表ID给商品扩展表
 		tbGoodsDescMapper.insert(goods.getGoodsDesc()); //添加商品拓展信息
@@ -206,8 +207,11 @@ public class GoodsServiceImpl implements GoodsService {
 		Criteria criteria = example.createCriteria();
 
 		criteria.andIsDeleteIsNull(); //指定条件为未逻辑删除记录
-		
-		if(goods!=null){			
+
+		criteria.andIsMarketableIsNullOrEqualTo("1");//只显示上架商品
+
+
+		if(goods!=null){
 						if(goods.getSellerId()!=null && goods.getSellerId().length()>0){
 				//criteria.andSellerIdLike("%"+goods.getSellerId()+"%");
 					// 精确匹配
@@ -252,6 +256,15 @@ public class GoodsServiceImpl implements GoodsService {
 			TbGoods goods = goodsMapper.selectByPrimaryKey(id);
 			goods.setAuditStatus(status);
 			goodsMapper.updateByPrimaryKey(goods);
+		}
+	}
+
+	@Override
+	public void setSaleStatus(Long[] ids, String marketable) {
+		for (Long id : ids) {
+			TbGoods tbGoods = goodsMapper.selectByPrimaryKey(id);
+			tbGoods.setIsMarketable(marketable);
+			goodsMapper.updateByPrimaryKey(tbGoods);
 		}
 	}
 

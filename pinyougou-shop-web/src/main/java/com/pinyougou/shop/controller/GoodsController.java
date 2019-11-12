@@ -128,5 +128,22 @@ public class GoodsController {
 		goods.setSellerId(name);
 		return goodsService.findPage(goods, page, rows);		
 	}
+
+
+	/**
+	 * 设置商品上下架状态
+	 * @param ids
+	 * @param marketable
+	 */
+	@RequestMapping("/setSaleStatus")
+	public Result setSaleStatus(Long[] ids, String marketable) {
+		try {
+			goodsService.setSaleStatus(ids,marketable);
+			return new Result( "设置成功",true);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new Result("设置失败",false);
+		}
+	}
 	
 }

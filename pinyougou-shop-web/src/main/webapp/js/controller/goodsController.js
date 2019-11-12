@@ -252,4 +252,18 @@ app.controller('goodsController' ,function($scope,$controller,$location,goodsSer
 		return true;
 	}
 
+	// 更新上下架状态
+	$scope.setSaleStatus = function (marketable) {
+		goodsService.setSaleStatus($scope.selectIds,marketable).success(
+			function (response) {
+				if (response.success){ //成功
+					$scope.reloadList(); //刷新
+					$scope.selectIds = []; // 清空id集合
+				}else {
+					alert(response.message)
+				}
+			}
+		)
+	}
+
 });	

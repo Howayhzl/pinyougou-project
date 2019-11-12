@@ -65,5 +65,6 @@ public interface GoodsService {
 	 * @param status
 	 */
 	public void updateStatus(Long[] ids,String status);
-	
+
+	public void setSaleStatus(Long[] ids,String Marketable);
 }

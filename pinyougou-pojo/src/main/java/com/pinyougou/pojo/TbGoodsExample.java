@@ -435,7 +435,12 @@ public class TbGoodsExample {
             return (Criteria) this;
         }
 
-        public Criteria andIsMarketableIsNull() {
+        public Criteria andIsMarketableIsNullOrEqualTo(String value) {
+            addCriterion("is_marketable is null or is_marketable =",value, "isMarketable");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsMarketableIsNullOrE() {
             addCriterion("is_marketable is null");
             return (Criteria) this;
         }
