@@ -17,6 +17,7 @@ import com.pinyougou.pojo.TbGoodsExample.Criteria;
 import com.pinyougou.sellergoods.service.GoodsService;
 
 import entity.PageResult;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 服务实现层
@@ -24,6 +25,7 @@ import entity.PageResult;
  *
  */
 @Service
+@Transactional
 public class GoodsServiceImpl implements GoodsService {
 
 	@Autowired
@@ -69,7 +71,6 @@ public class GoodsServiceImpl implements GoodsService {
 	@Override
 	public void add(Goods goods) {
 		goods.getGoods().setAuditStatus("0");  //状态:未审核
-		goods.getGoods().setIsMarketable("1"); //状态：上架
  		goodsMapper.insert(goods.getGoods());  //添加商品基本信心
 		goods.getGoodsDesc().setGoodsId(goods.getGoods().getId()); //将商品基本信息表ID给商品扩展表
 		tbGoodsDescMapper.insert(goods.getGoodsDesc()); //添加商品拓展信息
