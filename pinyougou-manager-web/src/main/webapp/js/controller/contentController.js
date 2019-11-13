@@ -102,5 +102,7 @@ app.controller('contentController' ,function($scope,$controller   ,contentServic
 			}
 		)
 	}
+	//广告状态
+	$scope.status =['无效','有效']
 
 });	
