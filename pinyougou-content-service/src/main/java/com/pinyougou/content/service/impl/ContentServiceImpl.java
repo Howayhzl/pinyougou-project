@@ -11,6 +11,7 @@ import com.pinyougou.pojo.TbContentExample.Criteria;
 import com.pinyougou.content.service.ContentService;
 
 import entity.PageResult;
+import org.springframework.data.redis.core.RedisTemplate;
 
 /**
  * 服务实现层
@@ -106,15 +107,25 @@ public class ContentServiceImpl implements ContentService {
 		return new PageResult(page.getTotal(), page.getResult());
 	}
 
+	@Autowired
+	private RedisTemplate redisTemplate;
+
 	@Override
 	public List<TbContent> findByCategoryId(Long categoryId) {
 
-		TbContentExample example = new TbContentExample();
-		Criteria criteria = example.createCriteria();
-		criteria.andCategoryIdEqualTo(categoryId);// 指定条件，分类ID
-		criteria.andStatusEqualTo("1"); // 指定条件，有效状态
-		example.setOrderByClause("sort_order");// 按照排序
-		List<TbContent> list= contentMapper.selectByExample(example);
+		List<TbContent> list = (List<TbContent>) redisTemplate.boundHashOps("content").get(categoryId);
+		if (list == null){
+			System.out.println("从数据库中查询数据并放入缓存");
+			TbContentExample example = new TbContentExample();
+			Criteria criteria = example.createCriteria();
+			criteria.andCategoryIdEqualTo(categoryId);// 指定条件，分类ID
+			criteria.andStatusEqualTo("1"); // 指定条件，有效状态
+			example.setOrderByClause("sort_order");// 按照排序
+			 list= contentMapper.selectByExample(example);
+			redisTemplate.boundHashOps("content").put(categoryId,list);//将广告数据放入缓存
+		}else {
+			System.out.println("从缓存中查询数据");
+		}
 		return list;
 	}
 
