@@ -56,7 +56,15 @@ public class ContentServiceImpl implements ContentService {
 	 */
 	@Override
 	public void update(TbContent content){
+		// 查询原来的分组ID
+		Long categoryId = contentMapper.selectByPrimaryKey(content.getId()).getCategoryId();
+		// 清除原分组的缓存
+		redisTemplate.boundHashOps("content").delete(categoryId);
 		contentMapper.updateByPrimaryKey(content);
+		// 清除现缓存
+		if (categoryId.longValue()!=content.getCategoryId().longValue()){
+			redisTemplate.boundHashOps("content").delete(categoryId);
+		}
 	}	
 	
 	/**
@@ -75,6 +83,8 @@ public class ContentServiceImpl implements ContentService {
 	@Override
 	public void delete(Long[] ids) {
 		for(Long id:ids){
+			//清除缓存
+			redisTemplate.boundHashOps("content").delete(contentMapper.selectByPrimaryKey(id).getCategoryId());
 			contentMapper.deleteByPrimaryKey(id);
 		}		
 	}
