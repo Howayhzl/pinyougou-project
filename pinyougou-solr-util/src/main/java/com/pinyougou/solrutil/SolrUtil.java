@@ -6,6 +6,7 @@ import com.pinyougou.pojo.TbItemExample;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.data.solr.core.SolrTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -15,6 +16,9 @@ public class SolrUtil {
 
     @Autowired
     private TbItemMapper itemMapper;
+
+    @Autowired
+    private SolrTemplate solrTemplate;
 
     /**
      * 导入商品数据
@@ -28,6 +32,8 @@ public class SolrUtil {
         for(TbItem item:itemList){
             System.out.println(item.getTitle());
         }
+        solrTemplate.saveBeans(itemList);
+        solrTemplate.commit();
         System.out.println("===结束===");
     }
 
