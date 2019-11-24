@@ -288,5 +288,6 @@
         <module>pinyougou-solr-util</module>
 		<module>pinyougou-search-interface</module>
 		<module>pinyougou-search-service</module>
-	</modules>
+        <module>pinyougou-search-web</module>
+    </modules>
 </project>
