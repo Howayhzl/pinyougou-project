@@ -30,7 +30,15 @@ public class ItemSearchServiceImpl implements ItemSearchService {
         ScoredPage<TbItem> page = solrTemplate.queryForPage(query, TbItem.class);
         map.put("rows",page.getContent());*/
 
-        // 高亮显示
+        // 1.查询列表
+        map.putAll(searchList(searchMap));
+
+        return map;
+    }
+
+    // 查询列表，高亮显示
+    private Map searchList(Map searchMap) {
+        Map map = new HashMap();
 
         // 构建高亮选项
         HighlightQuery query = new SimpleHighlightQuery();
