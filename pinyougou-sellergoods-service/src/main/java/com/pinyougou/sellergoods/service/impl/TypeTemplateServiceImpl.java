@@ -137,7 +137,7 @@ public class TypeTemplateServiceImpl implements TypeTemplateService {
 			redisTemplate.boundHashOps("specList").put(template.getId(),specList);
 
 		}
-		System.out.println("缓存品牌列表");
+		System.out.println("缓存品牌和规格列表");
 	}
 
 
