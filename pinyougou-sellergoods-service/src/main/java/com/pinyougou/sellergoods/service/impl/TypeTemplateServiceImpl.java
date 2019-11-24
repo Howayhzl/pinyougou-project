@@ -112,7 +112,7 @@ public class TypeTemplateServiceImpl implements TypeTemplateService {
 		Page<TbTypeTemplate> page= (Page<TbTypeTemplate>)typeTemplateMapper.selectByExample(example);
 
 		// 缓存处理
-
+		saveRedis();
 
 		return new PageResult(page.getTotal(), page.getResult());
 	}
