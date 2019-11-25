@@ -131,6 +131,7 @@ public class TypeTemplateServiceImpl implements TypeTemplateService {
 			// 缓存品牌列表
 			redisTemplate.boundHashOps("brandList").put(template.getId(),brandList);
 
+
 			// 得到规格列表
 			List<Map> specList = findSpecList(template.getId());
 			// 缓存规格列表

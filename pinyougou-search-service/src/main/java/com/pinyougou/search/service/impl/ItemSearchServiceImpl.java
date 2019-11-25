@@ -40,7 +40,7 @@ public class ItemSearchServiceImpl implements ItemSearchService {
 
         // 3.查询品牌和规格列表
         if (categorylist.size()>0){
-            searchBrandAndSpecList(categorylist.get(0));
+            map.putAll(searchBrandAndSpecList(categorylist.get(0)));
         }
 
         return map;
@@ -136,11 +136,12 @@ public class ItemSearchServiceImpl implements ItemSearchService {
             // 2.根据模板ID获取品牌列表
             List brandList = (List) redisTemplate.boundHashOps("brandList").get(templateId);
             map.put("brandList",brandList);
+            System.out.println("品牌列表条数："+brandList.size());
 
             // 3.根据模板ID获取规格列表
             List specList = (List) redisTemplate.boundHashOps("specList").get(templateId);
             map.put("specList",specList);
-
+            System.out.println("规格列表条数："+specList.size());
         }
 
         return map;
