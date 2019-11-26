@@ -153,14 +153,15 @@
 
 				</ul>
 				<ul class="tags-choose">
-					<li class="tag" ng-if="seachMap.category!=null">商品分类：{{seachMap.category}}<i class="sui-icon icon-tb-close"></i></li>
-					<li class="tag" ng-if="seachMap.brand!=null">品牌：{{seachMap.brand}}<i class="sui-icon icon-tb-close"></i></li>
-                    <li class="tag" ng-repeat="(key,value) in seachMap.spec">{{key}}:{{value}}<i class="sui-icon icon-tb-close"></i></li>
-
+					<li class="tag" ng-if="searchMap.category!=''" ng-click="removeSearchItem('category')">商品分类：{{seachMap.category}}<i class="sui-icon icon-tb-close"></i></li>
+					<li class="tag" ng-if="searchMap.brand!=''" ng-click="removeSearchItem('brand')">品牌：{{seachMap.brand}}<i class="sui-icon icon-tb-close"></i></li>
+                    <li class="tag" ng-repeat="(key,value) in seachMap.spec" ng-click="removeSearchItem(key)">{{key}}:{{value}}<i class="sui-icon icon-tb-close"></i></li>
+                    
                     {{searchMap}}
                 </ul>
 				<form class="fl sui-form form-dark">
 					<div class="input-control control-right">
+						<input type="text" />
 						<i class="sui-icon icon-touch-magnifier"></i>
 					</div>
 				</form>
