@@ -19,6 +19,7 @@ app.controller('searchController',function ($scope, searchService) {
         }else{
             $scope.searchMap.spec[key]=value;
         }
+        $scope.search();
     }
 
     //移除复合搜索条件
@@ -28,6 +29,7 @@ app.controller('searchController',function ($scope, searchService) {
         }else{//否则是规格
             delete $scope.searchMap.spec[key];//移除此属性
         }
+        $scope.search();
     }
 
 
