@@ -59,5 +59,12 @@ app.controller('searchController',function ($scope, searchService) {
         $scope.search();
     }
 
-
+    // 分页查询
+    $scope.queryByPage = function (pageNo) {
+        if (pageNo<1 || pageNo>$scope.resultMap.totalPages){
+            return;
+        }
+        $scope.searchMap.pageNo = pageNo;
+        $scope.search(); //查询
+    }
 })
