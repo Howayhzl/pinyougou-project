@@ -70,6 +70,12 @@ public class ItemSearchServiceImpl implements ItemSearchService {
             query.addFilterQuery(filterQuery);
         }
 
+        // 1.3 按品牌分类过滤
+        if(!"".equals(searchMap.get("brand"))){
+            Criteria filterCriteria=new Criteria("item_brand").is(searchMap.get("brand"));
+            FilterQuery filterQuery=new SimpleFilterQuery(filterCriteria);
+            query.addFilterQuery(filterQuery);
+        }
 
         // ************ 获取高亮结果集 ****************************
         // 高亮页对象
