@@ -88,6 +88,22 @@ public class ItemSearchServiceImpl implements ItemSearchService {
             }
         }
 
+        // 1.5按照价格过滤
+        if(!"".equals(searchMap.get("price"))){
+            String priceStr = (String) searchMap.get("price"); //500-1000
+            String[] price = priceStr.split("-");
+            if (!price[0].equals("0")){//如果最低介个不等于0
+                Criteria filterCriteria=new Criteria("item_price").greaterThan(price[0]);
+                FilterQuery filterQuery=new SimpleFilterQuery(filterCriteria);
+                query.addFilterQuery(filterQuery);
+            }
+            if (!price[1].equals("*")){//如果最高价格介个不等于*
+                Criteria filterCriteria=new Criteria("item_price").greaterThan(price[1]);
+                FilterQuery filterQuery=new SimpleFilterQuery(filterCriteria);
+                query.addFilterQuery(filterQuery);
+            }
+
+        }
 
 
         // ************ 获取高亮结果集 ****************************
