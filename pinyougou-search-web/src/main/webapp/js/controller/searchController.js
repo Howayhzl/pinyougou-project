@@ -9,7 +9,7 @@ app.controller('searchController',function ($scope, searchService) {
         searchService.search($scope.searchMap).success(
             function (response) {
                 $scope.resultMap = response;
-
+                $scope.searchMap.pageNo=1; //查询后显示第一页
                 buildPageLable()// 构建分页栏
             }
         );
@@ -21,14 +21,19 @@ app.controller('searchController',function ($scope, searchService) {
         var firstPage =1; //开始页码
         var  lastPage = $scope.resultMap.totalPages;
 
+        $scope.firstDot=true; //前面有点
+        $scope.endtDot=true; //后面有点
+
         if ($scope.resultMap.totalPages>5){ //如果页码数量大于5
             if ($scope.searchMap.pageNo <= 3){
                 lastPage=5;
+                $scope.firstDot=false; //前面没点
             } else if ($scope.searchMap.pageNo>=$scope.resultMap.totalPages-2 ) {//显示后5页
                 firstPage=$scope.resultMap.totalPages-4;
             }else {//显示以当前页为中心的5页
                 firstPage = $scope.searchMap.pageNo-2;
                 lastPage=$scope.searchMap.pageNo+2;
+                $scope.endtDot=false; //后边没点
             }
 
 
