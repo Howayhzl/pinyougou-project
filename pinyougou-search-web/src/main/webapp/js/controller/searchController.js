@@ -95,4 +95,11 @@ app.controller('searchController',function ($scope, searchService) {
         }
     }
 
+    // 排序查询
+    $scope.sortSearch = function (sortField, sort) {
+        $scope.searchMap.sortField = sortField;
+        $scope.searchMap.sort = sort;
+
+        $scope.search(); //查询
+    }
 })

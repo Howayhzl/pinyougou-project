@@ -125,7 +125,7 @@ public class ItemSearchServiceImpl implements ItemSearchService {
         String sortValue = (String) searchMap.get("sort"); // 升序 ASC 降序 DESC
         String sortField = (String) searchMap.get("sortField"); // 排序字段
 
-        if (sortValue!=null && sortField.equals("")){
+        if (sortValue!=null && !sortField.equals("")){
             if (sortValue.equals("ASC")){
                 Sort sort = new Sort(Sort.Direction.ASC,"item_"+sortField);
                 query.addSort(sort);
