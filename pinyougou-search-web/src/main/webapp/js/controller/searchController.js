@@ -1,7 +1,7 @@
 app.controller('searchController',function ($scope, searchService) {
 
     // 定义搜索对象结构 category：商品分类
-    $scope.searchMap={'keywords':'','category':'','brand':'','spec':{},'price':'','pageNo':1,'pageSize':20};//搜索对象
+    $scope.searchMap={'keywords':'','category':'','brand':'','spec':{},'price':'','pageNo':1,'pageSize':20,'sort':'','sortField':''};//搜索对象
 
     //搜索
     $scope.search = function () {
