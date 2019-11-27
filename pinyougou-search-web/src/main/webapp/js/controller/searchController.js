@@ -5,6 +5,7 @@ app.controller('searchController',function ($scope, searchService) {
 
     //搜索
     $scope.search = function () {
+        $scope.searchMap.pageNo = parseInt($scope.searchMap.pageNo) //转换为数字
         searchService.search($scope.searchMap).success(
             function (response) {
                 $scope.resultMap = response;
