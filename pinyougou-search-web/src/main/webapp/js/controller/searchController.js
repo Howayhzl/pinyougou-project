@@ -9,7 +9,7 @@ app.controller('searchController',function ($scope, searchService) {
         searchService.search($scope.searchMap).success(
             function (response) {
                 $scope.resultMap = response;
-                $scope.searchMap.pageNo=1; //查询后显示第一页
+               // $scope.searchMap.pageNo=1; //查询后显示第一页
                 buildPageLable()// 构建分页栏
             }
         );
@@ -37,6 +37,9 @@ app.controller('searchController',function ($scope, searchService) {
             }
 
 
+        }else {
+            $scope.firstDot=false; //前面无点
+            $scope.endtDot=false; //后面无点
         }
 
         // 构建页码
