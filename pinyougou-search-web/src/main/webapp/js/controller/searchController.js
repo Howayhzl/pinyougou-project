@@ -35,7 +35,7 @@ app.controller('searchController',function ($scope, searchService) {
         }
 
         // 构建页码
-        for (var i=firstPage;i<lastPage;i++){
+        for (var i=firstPage;i<=lastPage;i++){
             $scope.pageLable.push(i);
         }
     }
@@ -68,4 +68,23 @@ app.controller('searchController',function ($scope, searchService) {
         $scope.searchMap.pageNo = pageNo;
         $scope.search(); //查询
     }
+
+    // 判断当前页是否第一页
+    $scope.isTopPage = function () {
+        if ($scope.searchMap.pageNo == 1) {
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+    // 判断当前页是否最后一页
+    $scope.isEndPage = function () {
+        if ($scope.searchMap.pageNo == $scope.resultMap.totalPages) {
+            return true
+        }else {
+            return false;
+        }
+    }
+
 })
