@@ -17,7 +17,24 @@ app.controller('searchController',function ($scope, searchService) {
     buildPageLable = function(){
         // 构建分页栏
         $scope.pageLable=[];
-        for (var i=1;i<$scope.resultMap.totalPages;i++){
+        var firstPage =1; //开始页码
+        var  lastPage = $scope.resultMap.totalPages;
+
+        if ($scope.resultMap.totalPages>5){ //如果页码数量大于5
+            if ($scope.searchMap.pageNo <= 3){
+                lastPage=5;
+            } else if ($scope.searchMap.pageNo>=$scope.resultMap.totalPages-2 ) {//显示后5页
+                firstPage=$scope.resultMap.totalPages-4;
+            }else {//显示以当前页为中心的5页
+                firstPage = $scope.searchMap.pageNo-2;
+                lastPage=$scope.searchMap.pageNo+2;
+            }
+
+
+        }
+
+        // 构建页码
+        for (var i=firstPage;i<lastPage;i++){
             $scope.pageLable.push(i);
         }
     }
