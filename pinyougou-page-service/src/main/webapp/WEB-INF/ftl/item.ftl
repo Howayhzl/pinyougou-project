@@ -172,7 +172,7 @@
 				</div>
 				<div class="fr itemInfo-wrap">
 					<div class="sku-name">
-						<h4>Apple iPhone 6s（A1700）64G玫瑰金色 移动通信电信4G手机</h4>
+						<h4>${goods.goodsName}</h4>
 					</div>
 					<div class="news"><span>推荐选择下方[移动优惠购],手机套餐齐搞定,不用换号,每月还有花费返</span></div>
 					<div class="summary">
