@@ -1,4 +1,5 @@
 package com.pinyougou.manager.controller;
+import java.util.Arrays;
 import java.util.List;
 
 import com.pinyougou.pojo.TbItem;
@@ -80,6 +81,9 @@ public class GoodsController {
 	public Result delete(Long [] ids){
 		try {
 			goodsService.delete(ids);
+			// 从索引库中删除数据
+            itemSearchService.deleteByGoodsIds(Arrays.asList(ids));
+
 			return new Result( "删除成功",true);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -105,13 +109,14 @@ public class GoodsController {
 	public Result updateStatus(Long[]ids,String status){
 		try {
 			goodsService.updateStatus(ids,status);
-			if ("1".equals(status)){//如果审核通过
-				// 得到需要导入的SKU列表
-				List<TbItem> itemList = goodsService.findItemListByGoodsIdAndStatus(ids, status);
-				// 导入solr
-				itemSearchService.importList(itemList);
-			}
-			return new Result( "修改成功",true);
+            List<TbItem> itemList = goodsService.findItemListByGoodsIdAndStatus(ids, status);
+            //调用搜索接口实现数据批量导入
+            if(itemList.size()>0){
+                itemSearchService.importList(itemList);
+            }else{
+                System.out.println("没有明细数据");
+            }
+            return new Result( "修改成功",true);
 		}catch (Exception e){
 			e.printStackTrace();
 			return new Result( "修改失败",false);

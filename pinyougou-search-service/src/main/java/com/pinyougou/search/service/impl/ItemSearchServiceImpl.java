@@ -51,11 +51,7 @@ public class ItemSearchServiceImpl implements ItemSearchService {
         return map;
     }
 
-    @Override
-    public void importList(List list) {
-        solrTemplate.saveBeans(list);
-        solrTemplate.commit();
-    }
+
 
     // 查询列表，高亮显示
     private Map searchList(Map searchMap) {
@@ -233,4 +229,18 @@ public class ItemSearchServiceImpl implements ItemSearchService {
         return map;
     }
 
+    @Override
+    public void importList(List list) {
+        solrTemplate.saveBeans(list);
+        solrTemplate.commit();
+    }
+
+    @Override
+    public void deleteByGoodsIds(List goodsIdList) {
+        Query query = new SimpleQuery("*:*");
+        Criteria criteria = new Criteria("item_goodsid").in(goodsIdList);
+        query.addCriteria(criteria);
+        solrTemplate.delete(query);
+        solrTemplate.commit();
+    }
 }
