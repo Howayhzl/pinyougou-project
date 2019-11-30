@@ -102,4 +102,16 @@ app.controller('searchController',function ($scope, searchService) {
 
         $scope.search(); //查询
     }
+
+    // 判断输入的关键字是否品牌
+      $scope.keywordsIsBrand = function () {
+        for (var i=0; i<$scope.resultMap.brandList.length;i++){
+            if ($scope.searchMap.keywords.indexOf($scope.resultMap.brandList[i].text)>=0){ //如果输入的字包含品牌
+                return true
+            }
+
+        }
+        return  false;
+     }
+
 })
