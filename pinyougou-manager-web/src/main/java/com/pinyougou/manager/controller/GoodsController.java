@@ -1,7 +1,9 @@
 package com.pinyougou.manager.controller;
 import java.util.List;
 
+import com.pinyougou.pojo.TbItem;
 import com.pinyougou.pojogroup.Goods;
+import com.pinyougou.search.service.ItemSearchService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -97,10 +99,18 @@ public class GoodsController {
 		return goodsService.findPage(goods, page, rows);		
 	}
 
+	@Reference(timeout = 100000)
+	private ItemSearchService itemSearchService;
 	@RequestMapping("/updateStatus")
 	public Result updateStatus(Long[]ids,String status){
 		try {
 			goodsService.updateStatus(ids,status);
+			if ("1".equals(status)){//如果审核通过
+				// 得到需要导入的SKU列表
+				List<TbItem> itemList = goodsService.findItemListByGoodsIdAndStatus(ids, status);
+				// 导入solr
+				itemSearchService.importList(itemList);
+			}
 			return new Result( "修改成功",true);
 		}catch (Exception e){
 			e.printStackTrace();
