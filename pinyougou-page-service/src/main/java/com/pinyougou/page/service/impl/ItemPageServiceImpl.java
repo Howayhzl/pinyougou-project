@@ -4,9 +4,12 @@ import com.alibaba.dubbo.config.annotation.Service;
 import com.pinyougou.mapper.TbGoodsDescMapper;
 import com.pinyougou.mapper.TbGoodsMapper;
 import com.pinyougou.mapper.TbItemCatMapper;
+import com.pinyougou.mapper.TbItemMapper;
 import com.pinyougou.page.service.ItemPageService;
 import com.pinyougou.pojo.TbGoods;
 import com.pinyougou.pojo.TbGoodsDesc;
+import com.pinyougou.pojo.TbItem;
+import com.pinyougou.pojo.TbItemExample;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +19,7 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerConfig;
 
 import java.io.*;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -37,6 +41,9 @@ public class ItemPageServiceImpl implements ItemPageService {
 
     @Autowired
     private TbItemCatMapper itemCatMapper;
+
+    @Autowired
+    private TbItemMapper itemMapper;
 
     @Override
     public boolean generateHtml(Long goodsId) {
@@ -60,6 +67,15 @@ public class ItemPageServiceImpl implements ItemPageService {
             dataModel.put("Category2",Category2);
             dataModel.put("Category3",Category3);
 
+            // 4.读取SKU列表。 添加SKU列表
+            TbItemExample example = new TbItemExample();
+            TbItemExample.Criteria criteria = example.createCriteria();
+            criteria.andGoodsIdEqualTo(goodsId); //SPU列表
+            criteria.andStatusEqualTo("1"); // 状态有效
+            example.setOrderByClause("is_default desc"); // 按是否默认字段进行降序排序，目的是返回的结果的第一条为默认SKU
+            List<TbItem> itemList = itemMapper.selectByExample(example);
+
+            dataModel.put("itemList",itemList);
             OutputStreamWriter out = new OutputStreamWriter(new FileOutputStream(pagedir+goodsId+".html"),"utf-8");
 
            // Writer out = new FileWriter(pagedir+goodsId+".html");

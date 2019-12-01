@@ -16,6 +16,18 @@
     <script type="text/javascript" src="plugins/angularjs/angular.min.js">  </script>
     <script type="text/javascript" src="js/base.js">  </script>
     <script type="text/javascript" src="js/controller/itemController.js">  </script>
+	<script>
+		var skuList=[
+			<#list itemList as item>
+				{
+					id:${item.id?c},
+					title:'${item.title}'
+					price:${item.price?c}
+					spec:${item.spec}
+				},
+			</#list>
+		]
+	</script>
 </head>
 
 <body ng-app="pinyougou" ng-controller="itemController" ng-init="num=1">
