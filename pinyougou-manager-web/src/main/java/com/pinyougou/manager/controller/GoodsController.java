@@ -109,14 +109,20 @@ public class GoodsController {
 	@RequestMapping("/updateStatus")
 	public Result updateStatus(Long[]ids,String status){
 		try {
+			// *****导入到索引库
 			goodsService.updateStatus(ids,status);
             List<TbItem> itemList = goodsService.findItemListByGoodsIdAndStatus(ids, status);
             //调用搜索接口实现数据批量导入
             if(itemList.size()>0){
+            	// 导入到solr
                 itemSearchService.importList(itemList);
             }else{
                 System.out.println("没有明细数据");
             }
+            // *****生成商品详情页
+			for (Long goodsId : ids) {
+				itemPageService.generateHtml(goodsId);
+			}
             return new Result( "修改成功",true);
 		}catch (Exception e){
 			e.printStackTrace();
