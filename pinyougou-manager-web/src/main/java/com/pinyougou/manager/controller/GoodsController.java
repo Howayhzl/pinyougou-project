@@ -2,10 +2,14 @@ package com.pinyougou.manager.controller;
 import java.util.Arrays;
 import java.util.List;
 
+import com.alibaba.fastjson.JSON;
 import com.pinyougou.page.service.ItemPageService;
 import com.pinyougou.pojo.TbItem;
 import com.pinyougou.pojogroup.Goods;
 //import com.pinyougou.search.service.ItemSearchService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.core.MessageCreator;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +20,12 @@ import com.pinyougou.sellergoods.service.GoodsService;
 
 import entity.PageResult;
 import entity.Result;
+
+import javax.jms.Destination;
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.Session;
+
 /**
  * controller
  * @author Administrator
@@ -104,6 +114,11 @@ public class GoodsController {
 		return goodsService.findPage(goods, page, rows);		
 	}
 
+	@Autowired
+	private JmsTemplate jmsTemplate;
+
+	@Autowired
+	private Destination queueSolrDestination;
 	//@Reference(timeout = 100000)
 	//private ItemSearchService itemSearchService;
 	@RequestMapping("/updateStatus")
@@ -116,13 +131,22 @@ public class GoodsController {
             if(itemList.size()>0){
             	// 导入到solr
                 //itemSearchService.importList(itemList);
+				final String itemListString = JSON.toJSONString(itemList); // 转换为json传输
+				jmsTemplate.send(queueSolrDestination, new MessageCreator() {
+					@Override
+					public Message createMessage(Session session) throws JMSException {
+						return session.createTextMessage(itemListString);
+					}
+				});
+
+
             }else{
                 System.out.println("没有明细数据");
             }
             // *****生成商品详情页
-			for (Long goodsId : ids) {
+		/*	for (Long goodsId : ids) {
 				itemPageService.generateHtml(goodsId);
-			}
+			}*/
             return new Result( "修改成功",true);
 		}catch (Exception e){
 			e.printStackTrace();
