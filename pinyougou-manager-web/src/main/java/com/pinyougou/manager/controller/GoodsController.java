@@ -5,7 +5,7 @@ import java.util.List;
 import com.pinyougou.page.service.ItemPageService;
 import com.pinyougou.pojo.TbItem;
 import com.pinyougou.pojogroup.Goods;
-import com.pinyougou.search.service.ItemSearchService;
+//import com.pinyougou.search.service.ItemSearchService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -83,7 +83,7 @@ public class GoodsController {
 		try {
 			goodsService.delete(ids);
 			// 从索引库中删除数据
-            itemSearchService.deleteByGoodsIds(Arrays.asList(ids));
+           // itemSearchService.deleteByGoodsIds(Arrays.asList(ids));
 
 			return new Result( "删除成功",true);
 		} catch (Exception e) {
@@ -104,8 +104,8 @@ public class GoodsController {
 		return goodsService.findPage(goods, page, rows);		
 	}
 
-	@Reference(timeout = 100000)
-	private ItemSearchService itemSearchService;
+	//@Reference(timeout = 100000)
+	//private ItemSearchService itemSearchService;
 	@RequestMapping("/updateStatus")
 	public Result updateStatus(Long[]ids,String status){
 		try {
@@ -115,7 +115,7 @@ public class GoodsController {
             //调用搜索接口实现数据批量导入
             if(itemList.size()>0){
             	// 导入到solr
-                itemSearchService.importList(itemList);
+                //itemSearchService.importList(itemList);
             }else{
                 System.out.println("没有明细数据");
             }
