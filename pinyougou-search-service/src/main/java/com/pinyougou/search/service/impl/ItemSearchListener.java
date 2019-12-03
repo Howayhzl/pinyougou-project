@@ -13,10 +13,10 @@ import javax.jms.TextMessage;
 import java.util.List;
 
 @Component
-public class itemSearchListener implements MessageListener {
+public class ItemSearchListener implements MessageListener {
 
     @Autowired
-   private ItemSearchService itemSearchService;
+    private ItemSearchService itemSearchService;
 
     @Override
     public void onMessage(Message message) {
