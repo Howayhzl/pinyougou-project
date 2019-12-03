@@ -35,8 +35,8 @@
     </bean>
 
     <!--这个是订阅模式  文本信息-->
-	<!--<bean id="topicTextDestination" class="org.apache.activemq.command.ActiveMQTopic">
-	    <constructor-arg value="topic_text"/>  
-	</bean>  -->
+	<bean id="topicPageDestination" class="org.apache.activemq.command.ActiveMQTopic">
+	    <constructor-arg value="pinyougou_topic_page"/>
+	</bean>
 	
 </beans>

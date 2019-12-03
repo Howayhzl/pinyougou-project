@@ -126,7 +126,10 @@ public class GoodsController {
 	private JmsTemplate jmsTemplate;
 
 	@Autowired
-	private Destination queueSolrDestination;
+	private Destination queueSolrDestination;//用于导入solr索引库的消息目标（点对点）
+
+	@Autowired
+   private Destination topicPageDestination; // 用于生成商品详细页的消息目标（发布订阅）
 	//@Reference(timeout = 100000)
 	//private ItemSearchService itemSearchService;
 	@RequestMapping("/updateStatus")
@@ -155,6 +158,14 @@ public class GoodsController {
 		/*	for (Long goodsId : ids) {
 				itemPageService.generateHtml(goodsId);
 			}*/
+            for (final Long goodsId : ids) {
+                jmsTemplate.send(topicPageDestination, new MessageCreator() {
+                    @Override
+                    public Message createMessage(Session session) throws JMSException {
+                        return session.createTextMessage(goodsId+"");
+                    }
+                });
+            }
             return new Result( "修改成功",true);
 		}catch (Exception e){
 			e.printStackTrace();
