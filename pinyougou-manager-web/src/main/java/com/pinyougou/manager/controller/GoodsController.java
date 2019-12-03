@@ -82,19 +82,27 @@ public class GoodsController {
 	public Goods findOne(Long id){
 		return goodsService.findOne(id);		
 	}
-	
+
+
+	@Autowired
+	private Destination queueSolrDeleteDestination;
 	/**
 	 * 批量删除
 	 * @param ids
 	 * @return
 	 */
 	@RequestMapping("/delete")
-	public Result delete(Long [] ids){
+	public Result delete(final Long [] ids){
 		try {
 			goodsService.delete(ids);
 			// 从索引库中删除数据
            // itemSearchService.deleteByGoodsIds(Arrays.asList(ids));
-
+            jmsTemplate.send(queueSolrDeleteDestination, new MessageCreator() {
+                @Override
+                public Message createMessage(Session session) throws JMSException {
+                    return session.createObjectMessage(ids);
+                }
+            });
 			return new Result( "删除成功",true);
 		} catch (Exception e) {
 			e.printStackTrace();
