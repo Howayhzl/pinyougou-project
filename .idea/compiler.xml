@@ -7,12 +7,15 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="pinyougou-search-service" />
+        <module name="pinyougou-user-service" />
+        <module name="pinyougou-user-web" />
         <module name="pinyougou-page-web" />
         <module name="pinyougou-content-service" />
         <module name="pinyougou-sellergoods-interface" />
         <module name="pinyougou-solr-util" />
         <module name="pinyougou-common" />
         <module name="pinyougou-manager-web" />
+        <module name="pingyougou-sms-service" />
         <module name="pinyougou-page-interface" />
         <module name="pinyougou-sellergoods-service" />
         <module name="pinyougou-content-interface" />
@@ -22,10 +25,12 @@
         <module name="pinyougou-portal-web" />
         <module name="pinyougou-pojo" />
         <module name="pinyougou-search-interface" />
+        <module name="pinyougou-user-interface" />
         <module name="pinyougou-shop-web" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="pingyougou-sms-service" target="1.8" />
       <module name="pinyougou-common" target="1.7" />
       <module name="pinyougou-content-interface" target="1.7" />
       <module name="pinyougou-content-service" target="1.7" />
@@ -44,6 +49,9 @@
       <module name="pinyougou-sellergoods-service" target="1.7" />
       <module name="pinyougou-shop-web" target="1.7" />
       <module name="pinyougou-solr-util" target="1.7" />
+      <module name="pinyougou-user-interface" target="1.7" />
+      <module name="pinyougou-user-service" target="1.7" />
+      <module name="pinyougou-user-web" target="1.7" />
       <module name="spring-security-demo" target="1.7" />
     </bytecodeTargetLevel>
   </component>
