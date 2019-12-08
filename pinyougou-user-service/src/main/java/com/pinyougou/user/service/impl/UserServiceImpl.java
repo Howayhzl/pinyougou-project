@@ -1,7 +1,10 @@
 package com.pinyougou.user.service.impl;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import com.alibaba.fastjson.JSON;
 import com.pinyougou.mapper.TbUserMapper;
 import com.pinyougou.pojo.TbUser;
 import com.pinyougou.user.service.UserService;
@@ -15,7 +18,12 @@ import com.pinyougou.pojo.TbUserExample.Criteria;
 
 
 import entity.PageResult;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.core.MessageCreator;
+
+import javax.jms.*;
 
 /**
  * 服务实现层
@@ -145,14 +153,40 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private RedisTemplate redisTemplate;
 
+	@Autowired
+	private JmsTemplate jmsTemplate;
+
+	@Autowired
+	private Destination smsDestination;
+
+	@Value("${template_code}")
+	private String template_code;
+
+	@Value("${sign_name}")
+	private String sign_name;
+
 	@Override
-	public void createSmsCode(String phone) {
+	public void createSmsCode(final String phone) {
 		//1.生成一个6位数的随机数（验证码）
-		String smscode = (long)(Math.random()*1000000)+"";
+		final String smscode = (long)(Math.random()*1000000)+"";
 		System.out.println("验证码是："+smscode);
 		// 2.将验证码放到redis中
 		redisTemplate.boundHashOps("csmcode").put(phone,smscode);
 		// 3.将短信内容发达activeMQ
+		jmsTemplate.send(smsDestination, new MessageCreator() {
+			@Override
+			public Message createMessage(Session session) throws JMSException {
+				MapMessage mapMessage = session.createMapMessage();
+				mapMessage.setString("mobile", phone);//手机号
+				mapMessage.setString("template_code", template_code);//模板编号
+				mapMessage.setString("sign_name", sign_name);//签名
+				Map m=new HashMap<>();
+				m.put("number", smscode);
+				mapMessage.setString("param", JSON.toJSONString(m));//参数
+				return mapMessage;
+
+			}
+		});
 	}
 
 	@Override
