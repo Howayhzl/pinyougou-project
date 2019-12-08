@@ -12,7 +12,7 @@
     
 	<dubbo:application name="pinyougou-user-service"/>
     <dubbo:registry address="zookeeper://192.168.25.135:2181"/>
-    <dubbo:annotation package="com.pinyougou.content.user.impl" />
+    <dubbo:annotation package="com.pinyougou.user.service.impl" />
    
    
 </beans>
