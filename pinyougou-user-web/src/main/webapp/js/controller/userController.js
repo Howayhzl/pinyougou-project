@@ -20,5 +20,18 @@ app.controller('userController' ,function($scope,$controller,userService){
 		)
 	}
 
+	//发送验证码
+	$scope.sendCode = function () {
+		if ($scope.entity.phone == null || $scope.entity.phone==""){
+			alert("请填写手机号码")
+			return ;
+		}
+		userService.sendCode($scope.entity.phone).success(
+			function (response) {
+				alert(response.message)
+			}
+		)
+	}
+
     
 });	

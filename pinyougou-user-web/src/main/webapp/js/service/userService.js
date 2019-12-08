@@ -8,4 +8,9 @@ app.service('userService',function($http){
 	this.add=function(entity){
 		return  $http.post('../user/add.do',entity );
 	}
+
+	// 发送验证码
+	this.sendCode=function (phone) {
+		return $http.get('../user/sendCode.do?phone='+phone);
+	}
 });
