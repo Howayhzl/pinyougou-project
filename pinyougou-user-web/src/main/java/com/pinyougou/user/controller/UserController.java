@@ -3,6 +3,7 @@ import java.util.List;
 
 import com.pinyougou.pojo.TbUser;
 import com.pinyougou.user.service.UserService;
+import com.utils.PhoneFormatCheckUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -110,5 +111,19 @@ public class UserController {
 	public PageResult search(@RequestBody TbUser user, int page, int rows  ){
 		return userService.findPage(user, page, rows);		
 	}
-	
+
+	@RequestMapping("/sendCode")
+	public Result sendCode(String phone){
+		// 对手机号码最验证
+		if (!PhoneFormatCheckUtils.isPhoneLegal(phone)){
+			return new Result("手机格式不正确",false);
+		}
+		try {
+			userService.createSmsCode(phone);
+			return new Result( "发送验证码成功",true);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new Result( "发送验证码失败",false);
+		}
+	}
 }
