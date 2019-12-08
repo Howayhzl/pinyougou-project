@@ -5,8 +5,8 @@ app.service('userService',function($http){
 		return $http.get('../user/findPage.do?page='+page+'&rows='+rows);
 	}
 	//增加 
-	this.add=function(entity){
-		return  $http.post('../user/add.do',entity );
+	this.add=function(entity,smsCode){
+		return  $http.post('../user/add.do?smsCode='+smsCode,entity );
 	}
 
 	// 发送验证码

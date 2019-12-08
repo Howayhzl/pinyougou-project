@@ -13,7 +13,7 @@ app.controller('userController' ,function($scope,$controller,userService){
 			return ;
 		}
 		// 新增
-		userService.add($scope.entity).success(
+		userService.add($scope.entity,$scope.smsCode).success(
 			function (response) {
 				alert(response.message)
 			}
