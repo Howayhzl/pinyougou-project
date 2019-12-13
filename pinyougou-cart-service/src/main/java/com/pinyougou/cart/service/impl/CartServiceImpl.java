@@ -47,9 +47,41 @@ public class CartServiceImpl implements CartService {
             cartList.add(cart);
         }else {
             // 5.如果购物车列表中存在该商家的购物车
+            TbOrderItem orderItem = searchOrderItemByITemId(cart.getOrderItemList(), itemId);
             // 判断该商品是否在该购物车明细列表中存在
-            // 5.1 如果不存在，创建新的购物车明细对象，并添加到该购物车的明细列表中
-            // 5.2 如果存在，在原有的数量上添加数量，并且更新金额
+            if (orderItem == null){
+                // 5.1 如果不存在，创建新的购物车明细对象，并添加到该购物车的明细列表中
+                 orderItem= createOrderItem(num, item);
+                 cart.getOrderItemList().add(orderItem);
+            }else {
+                // 5.2 如果存在，在原有的数量上添加数量，并且更新金额
+                orderItem.setNum(orderItem.getNum()+num); //更改数量
+                orderItem.setTotalFee(new BigDecimal(orderItem.getPrice().doubleValue()*orderItem.getNum()));
+                // 当明细的数量小于等于0，移除此明细
+                if (orderItem.getNum()<=0){
+                    cart.getOrderItemList().remove(orderItem);
+                }
+                // 当购物的明细数量为0时，在购物车列表中移除该购物车
+                if (cart.getOrderItemList().size()==0){
+                    cartList.remove(cart);
+                }
+            }
+
+        }
+        return cartList;
+    }
+
+    /**
+     * 根据skuID在购物车明细列表中查询购物车明细对象
+     * @param orderItemList
+     * @param itemId
+     * @return
+     */
+    public TbOrderItem searchOrderItemByITemId(List<TbOrderItem> orderItemList,Long itemId){
+        for (TbOrderItem orderItem : orderItemList) {
+            if (orderItem.getItemId().longValue()==itemId.longValue()){
+                return orderItem;
+            }
         }
         return null;
     }
