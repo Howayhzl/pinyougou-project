@@ -295,5 +295,7 @@
 		<module>pinyougou-user-interface</module>
 		<module>pinyougou-user-web</module>
 		<module>pinyougou-user-service</module>
-    </modules>
+        <module>pinyougou-cart-interface</module>
+		<module>pinyougou-cart-service</module>
+	</modules>
 </project>
