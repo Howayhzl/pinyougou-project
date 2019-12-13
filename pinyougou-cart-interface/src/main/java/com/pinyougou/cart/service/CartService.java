@@ -11,8 +11,8 @@ public interface CartService {
 
     /**
      * 添加商品到购物车
-     * @param list
+     * @param itemId
      * @return
      */
-    public List<Cart> addGoodsToCartList(List<Cart> list,Long itemId,Integer num);
+    public List<Cart> addGoodsToCartList(List<Cart> cartList,Long itemId,Integer num);
 }
