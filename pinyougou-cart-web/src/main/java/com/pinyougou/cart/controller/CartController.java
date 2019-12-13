@@ -27,6 +27,7 @@ public class CartController {
     @Autowired
     private HttpServletResponse response;
 
+    @RequestMapping("/findCartLIst")
     public List<Cart> findCartLIst(){
         // 从cookie中提取购物车
         String cartListString = CookieUtil.getCookieValue(request, "cartList", "utf-8");
