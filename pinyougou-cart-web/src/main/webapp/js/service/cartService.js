@@ -25,5 +25,8 @@ app.service('cartService',function ($http) {
         return totalValue;
     }
 
-
+    // 获取当前登陆账号收获的地址
+    this.findAddressList = function () {
+        return $http.get('address/findListByLoginUser.do');
+    }
 })
