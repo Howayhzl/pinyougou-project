@@ -89,9 +89,9 @@
 								
 								<li class="yui3-u-1-8"><span class="price">{{item.price}}</span></li>
 								<li class="yui3-u-1-8">
-									<a href="javascript:void(0)" class="increment mins">-</a>
-									<input autocomplete="off" type="text" value="1" minnum="1" class="itxt" />
-									<a href="javascript:void(0)" class="increment plus">+</a>
+									<a href="javascript:void(0)" ng-click="addGoodsToCartList(item.itemId,-1)" class="increment mins" >-</a>
+									<input autocomplete="off" type="text" value="1" minnum="1" class="itxt" ng-model="item.num" />
+									<a href="javascript:void(0)" ng-click="addGoodsToCartList(item.itemId,1)" class="increment plus" >+</a>
 								</li>
 								<li class="yui3-u-1-8"><span class="sum">{{item.totalFee}}</span></li>
 								<li class="yui3-u-1-8">
