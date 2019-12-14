@@ -45,7 +45,28 @@ app.controller('cartController',function ($scope, cartService) {
        cartService.findAddressList().success(
            function (response) {
                $scope.findAddressList = response;
+               //设置默认地址
+               for (var i=0; i<$scope.findAddressList.length;i++){
+                   if ($scope.findAddressList[i].isDefault=='1'){
+                       $scope.adress = $scope.findAddressList[i];
+                       break;
+                   }
+               }
            }
        )
    }
+
+   // 选择地址
+   $scope.selectAddress = function (address) {
+       $scope.adress = address;
+   }
+
+    //判断是否是当前选中的地址
+    $scope.isSelectedAddress = function (address) {
+        if (address == $scope.adress){
+            return true;
+        } else {
+            return false;
+        }
+    }
 })
