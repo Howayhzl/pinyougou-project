@@ -71,9 +71,9 @@ public class CartController {
     @RequestMapping("/addGoodsToCartList")
     @CrossOrigin(origins = "http://localhost:9105",allowCredentials = "true")
     public Result addGoodsToCartList(Long itemId, Integer num){
-
+       // @CrossOrigin(origins = "http://localhost:9105",allowCredentials = "true")
         //response.setHeader("Access-Control-Allow-Origin","http://localhost:9105"); // 可以访问的域（不需要操作cookie）
-        //response.setHeader("Access-Control-Allow-Credentials","true"); // 如果操作cookie，必须加上这句话
+       //response.setHeader("Access-Control-Allow-Credentials","true"); // 如果操作cookie，必须加上这句话
 
         // 当前登陆人账号，判断当前是否有人登陆
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
