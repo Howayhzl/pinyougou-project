@@ -21,7 +21,7 @@ import java.util.List;
 @RequestMapping("/cart")
 public class CartController {
 
-    @Reference
+    @Reference(timeout = 60000)
     private CartService cartService;
 
     @Autowired
@@ -38,6 +38,7 @@ public class CartController {
         System.out.println("当前登陆人："+name);
         if (name.equals("anonymousUser")){ // 未登录
             // 从cookie中提取购物车
+            System.out.println("从cookie中提取购物车");
             String cartListString = CookieUtil.getCookieValue(request, "cartList", "utf-8");
             if (CommonUtils.isEmpty(cartListString)){
                 cartListString = "[]";
@@ -45,6 +46,7 @@ public class CartController {
             List<Cart> cartList = JSON.parseArray(cartListString, Cart.class);
             return cartList;
         }else { // 已登录
+            System.out.println("从redis中提取购物车");
             List<Cart> cartList = cartService.findCartListFromRedis(name);
             return cartList;
         }
@@ -63,10 +65,12 @@ public class CartController {
         cartList = cartService.addGoodsToCartList(cartList, itemId, num);
         try {
             if (name.equals("anonymousUser")){ // 未登录
+                System.out.println("将新的购物车存入cookie");
                 // 将新的购物车存入cookie
                 String cartListString = JSON.toJSONString(cartList);
                 CookieUtil.setCookie(request,response,"cartList",cartListString,3600*24,"utf-8");
             }else {
+                System.out.println("将新的购物车存入redis中");
                 cartService.saveCartListToRedis(name,cartList);
             }
             return new Result("存入购物车成功",true);
