@@ -35,34 +35,40 @@ public class CartController {
 
         // 当前登陆人账号，判断当前是否有人登陆
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
-        if (name.equals("anonymousUser")){ // 未登录
-
-        }else { // 已登录
-
-        }
         System.out.println("当前登陆人："+name);
-
-        // 从cookie中提取购物车
-        String cartListString = CookieUtil.getCookieValue(request, "cartList", "utf-8");
-        if (CommonUtils.isEmpty(cartListString)){
-            cartListString = "[]";
+        if (name.equals("anonymousUser")){ // 未登录
+            // 从cookie中提取购物车
+            String cartListString = CookieUtil.getCookieValue(request, "cartList", "utf-8");
+            if (CommonUtils.isEmpty(cartListString)){
+                cartListString = "[]";
+            }
+            List<Cart> cartList = JSON.parseArray(cartListString, Cart.class);
+            return cartList;
+        }else { // 已登录
+            List<Cart> cartList = cartService.findCartListFromRedis(name);
+            return cartList;
         }
-        List<Cart> cartList = JSON.parseArray(cartListString, Cart.class);
-        return cartList;
     }
 
 
 
     @RequestMapping("/addGoodsToCartList")
     public Result addGoodsToCartList(Long itemId, Integer num){
-        // 从cookie中提取购物车
+        // 当前登陆人账号，判断当前是否有人登陆
+        String name = SecurityContextHolder.getContext().getAuthentication().getName();
+        System.out.println("当前登陆人："+name);
+        // 提取购物车
+        List<Cart> cartList = findCartLIst();
+        // 调用服务方法操作购物车
+        cartList = cartService.addGoodsToCartList(cartList, itemId, num);
         try {
-            List<Cart> cartList = findCartLIst();
-            // 调用服务方法操作购物车
-            cartList = cartService.addGoodsToCartList(cartList, itemId, num);
-            // 将新的购物车存入cookie
-            String cartListString = JSON.toJSONString(cartList);
-            CookieUtil.setCookie(request,response,"cartList",cartListString,3600*24,"utf-8");
+            if (name.equals("anonymousUser")){ // 未登录
+                // 将新的购物车存入cookie
+                String cartListString = JSON.toJSONString(cartList);
+                CookieUtil.setCookie(request,response,"cartList",cartListString,3600*24,"utf-8");
+            }else {
+                cartService.saveCartListToRedis(name,cartList);
+            }
             return new Result("存入购物车成功",true);
         } catch (Exception e) {
             e.printStackTrace();
