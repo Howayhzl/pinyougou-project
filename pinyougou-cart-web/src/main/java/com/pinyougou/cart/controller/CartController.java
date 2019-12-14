@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -36,19 +37,30 @@ public class CartController {
         // 当前登陆人账号，判断当前是否有人登陆
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
         System.out.println("当前登陆人："+name);
+        String cartListString = CookieUtil.getCookieValue(request, "cartList", "utf-8");
+        if (CommonUtils.isEmpty(cartListString)){
+            cartListString = "[]";
+        }
+        List<Cart> cartList_cookie = JSON.parseArray(cartListString, Cart.class);
         if (name.equals("anonymousUser")){ // 未登录
             // 从cookie中提取购物车
             System.out.println("从cookie中提取购物车");
-            String cartListString = CookieUtil.getCookieValue(request, "cartList", "utf-8");
-            if (CommonUtils.isEmpty(cartListString)){
-                cartListString = "[]";
-            }
-            List<Cart> cartList = JSON.parseArray(cartListString, Cart.class);
-            return cartList;
+
+            return cartList_cookie;
         }else { // 已登录
             System.out.println("从redis中提取购物车");
-            List<Cart> cartList = cartService.findCartListFromRedis(name);
-            return cartList;
+            // 合并购物车逻辑
+            // 获取redis购物车
+            List<Cart> cartList_redis = cartService.findCartListFromRedis(name);
+            if (cartList_cookie.size()>0){ // 判断本地购物车是否存在，存在才合并，提高性能
+                List<Cart>  cartList_merge = cartService.mergeCartList(cartList_cookie, cartList_redis);
+                // 将合并后的购物车存入redis
+                cartService.saveCartListToRedis(name,cartList_merge);
+                // 本地购物车清楚
+                CookieUtil.deleteCookie(request,response,"cartList");
+                return cartList_merge;
+            }
+            return cartList_redis;
         }
     }
 
