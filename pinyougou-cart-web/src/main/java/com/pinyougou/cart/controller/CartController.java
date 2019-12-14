@@ -1,5 +1,6 @@
 package com.pinyougou.cart.controller;
 
+import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.fastjson.JSON;
 import com.pinyougou.cart.service.CartService;
 import com.pinyougou.pojogroup.Cart;
@@ -18,7 +19,7 @@ import java.util.List;
 @RequestMapping("/cart")
 public class CartController {
 
-    @Autowired
+    @Reference
     private CartService cartService;
 
     @Autowired
@@ -27,7 +28,7 @@ public class CartController {
     @Autowired
     private HttpServletResponse response;
 
-    @RequestMapping("/findCartLIst")
+    @RequestMapping("/findCartList")
     public List<Cart> findCartLIst(){
         // 从cookie中提取购物车
         String cartListString = CookieUtil.getCookieValue(request, "cartList", "utf-8");
