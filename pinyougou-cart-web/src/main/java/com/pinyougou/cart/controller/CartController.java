@@ -8,6 +8,8 @@ import com.utils.CookieUtil;
 import entity.Result;
 import org.jasig.cas.client.util.CommonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,6 +32,16 @@ public class CartController {
 
     @RequestMapping("/findCartList")
     public List<Cart> findCartLIst(){
+
+        // 当前登陆人账号，判断当前是否有人登陆
+        String name = SecurityContextHolder.getContext().getAuthentication().getName();
+        if (name.equals("anonymousUser")){ // 未登录
+
+        }else { // 已登录
+
+        }
+        System.out.println("当前登陆人："+name);
+
         // 从cookie中提取购物车
         String cartListString = CookieUtil.getCookieValue(request, "cartList", "utf-8");
         if (CommonUtils.isEmpty(cartListString)){
