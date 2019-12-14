@@ -69,4 +69,11 @@ app.controller('cartController',function ($scope, cartService) {
             return false;
         }
     }
+
+    $scope.order = {paymentType:'1'};
+
+   // 选择支付类型
+   $scope.selectPayType = function (type) {
+       $scope.order.paymentType = type;
+   }
 })
