@@ -93,6 +93,7 @@ public class CartServiceImpl implements CartService {
         redisTemplate.boundHashOps("cartList").put(userName,cartList);
     }
 
+
     /**
      * 根据skuID在购物车明细列表中查询购物车明细对象
      * @param orderItemList
@@ -141,5 +142,18 @@ public class CartServiceImpl implements CartService {
             }
         }
         return null;
+    }
+
+
+    @Override
+    public List<Cart> mergeCartList(List<Cart> cartList1, List<Cart> cartList2) {
+        // 不能简单合并
+        System.out.println("合并购物车");
+        for (Cart cart : cartList2) {
+            for (TbOrderItem orderItem : cart.getOrderItemList()) {
+                cartList1 = addGoodsToCartList(cartList1,orderItem.getItemId(),orderItem.getNum());
+            }
+        }
+        return cartList1;
     }
 }
