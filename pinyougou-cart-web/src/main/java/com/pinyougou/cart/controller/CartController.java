@@ -58,6 +58,7 @@ public class CartController {
                 cartService.saveCartListToRedis(name,cartList_merge);
                 // 本地购物车清楚
                 CookieUtil.deleteCookie(request,response,"cartList");
+                System.out.println("执行了合并购物车的逻辑");
                 return cartList_merge;
             }
             return cartList_redis;
