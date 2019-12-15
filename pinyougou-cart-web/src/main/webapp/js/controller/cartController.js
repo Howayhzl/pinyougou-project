@@ -76,4 +76,16 @@ app.controller('cartController',function ($scope, cartService) {
    $scope.selectPayType = function (type) {
        $scope.order.paymentType = type;
    }
+
+   // 保存订单
+   $scope.submitOrder = function () {
+        $scope.order.receiverAreaName = $scope.adress.address; // 地址
+        $scope.order.receiverMobile = $scope.adress.mobile; // 手机
+        $scope.order.receiver = $scope.adress.contact; // 联系人
+       cartService.submitOrder( $scope.order).success(
+           function (resposne) {
+               alert(resposne.message);
+           }
+       )
+   }
 })
