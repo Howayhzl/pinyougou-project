@@ -3,6 +3,7 @@ import java.util.List;
 
 import com.pinyougou.order.service.OrderService;
 import com.pinyougou.pojo.TbOrder;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -48,6 +49,10 @@ public class OrderController {
 	 */
 	@RequestMapping("/add")
 	public Result add(@RequestBody TbOrder order){
+		// 获取当前登录用户名
+		String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+		order.setSellerId(userName);
+		order.setSourceType("2"); // 订单来源PC
 		try {
 			orderService.add(order);
 			return new Result( "增加成功",true);
