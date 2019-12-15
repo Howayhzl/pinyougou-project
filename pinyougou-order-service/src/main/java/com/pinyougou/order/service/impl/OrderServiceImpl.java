@@ -71,26 +71,26 @@ public class OrderServiceImpl implements OrderService {
 			TbOrder tbOrder = new TbOrder();
 			long orderId = idWorker.nextId(); // 获取id
 			tbOrder.setOrderId(orderId); // 订单id
+			tbOrder.setUserId(order.getUserId()); // 用户名
 
 			tbOrder.setPaymentType(order.getPaymentType()); //支付类型，1、在线支付，2、货到付款
 			tbOrder.setStatus("1"); // 未付款
 			tbOrder.setCreateTime(new Date()); // 订单创建时间
 			tbOrder.setUpdateTime(new Date()); // 订单更新时间
-			tbOrder.setUserId(order.getUserId()); // 用户id
 			tbOrder.setReceiverAreaName(order.getReceiverAreaName()); //收货人地区名称(省，市，县)街道
 			tbOrder.setReceiverMobile(order.getReceiverMobile()); // 收货人手机
 			tbOrder.setReceiver(order.getReceiver()); // 收货人
 			tbOrder.setSourceType(order.getSourceType()); // 订单来源：1:app端，2：pc端，3：M端，4：微信端，5：手机qq端
-			tbOrder.setSellerId(order.getSellerId()); // 商家ID
+			tbOrder.setSellerId(cart.getSellerId()); // 商家ID
 
 			double money = 0;
 			// 循环购物车中每条明细记录
-			for (TbOrderItem orderItem : cart.getOrderItemList()) {
-				orderItem.setId(orderId); // 订单id
-				orderItem.setId(idWorker.nextId()); // 主键
-				orderItem.setSellerId(cart.getSellerId()); // 商家ID
+			for(TbOrderItem orderItem:cart.getOrderItemList()  ){
+				orderItem.setId(idWorker.nextId());//主键
+				orderItem.setOrderId(orderId);//订单编号
+				orderItem.setSellerId(cart.getSellerId());//商家ID
+				money+=orderItem.getTotalFee().doubleValue();
 				orderItemMapper.insert(orderItem);
-				money += orderItem.getTotalFee().doubleValue();
 			}
 
 			tbOrder.setPayment(new BigDecimal(money)); //合计金额
