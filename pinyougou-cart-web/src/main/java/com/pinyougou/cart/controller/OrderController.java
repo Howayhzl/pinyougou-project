@@ -51,7 +51,7 @@ public class OrderController {
 	public Result add(@RequestBody TbOrder order){
 		// 获取当前登录用户名
 		String userName = SecurityContextHolder.getContext().getAuthentication().getName();
-		order.setSellerId(userName);
+		order.setUserId(userName);
 		order.setSourceType("2"); // 订单来源PC
 		try {
 			orderService.add(order);

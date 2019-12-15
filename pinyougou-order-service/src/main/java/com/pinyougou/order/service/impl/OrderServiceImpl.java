@@ -88,7 +88,7 @@ public class OrderServiceImpl implements OrderService {
 			for (TbOrderItem orderItem : cart.getOrderItemList()) {
 				orderItem.setId(orderId); // 订单id
 				orderItem.setId(idWorker.nextId()); // 主键
-				orderItem.setSellerId(orderItem.getSellerId()); // 商家ID
+				orderItem.setSellerId(cart.getSellerId()); // 商家ID
 				orderItemMapper.insert(orderItem);
 				money += orderItem.getTotalFee().doubleValue();
 			}

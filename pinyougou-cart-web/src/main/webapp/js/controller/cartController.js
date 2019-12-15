@@ -84,7 +84,16 @@ app.controller('cartController',function ($scope, cartService) {
         $scope.order.receiver = $scope.adress.contact; // 联系人
        cartService.submitOrder( $scope.order).success(
            function (resposne) {
-               alert(resposne.message);
+               if (resposne.success()){
+                   // 页面跳转
+                   if ($scope.order.paymentType=='1'){
+                       location.href='pay.html';
+                   } else { //如果货到付款
+                       location.href='paysuccess.html';
+                   }
+               } else {
+                   alert(resposne.message); //也可以跳转到提示页面
+               }
            }
        )
    }
