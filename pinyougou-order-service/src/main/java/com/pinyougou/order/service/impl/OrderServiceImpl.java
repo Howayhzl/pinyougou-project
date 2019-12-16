@@ -1,13 +1,16 @@
 package com.pinyougou.order.service.impl;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import com.pinyougou.mapper.TbOrderItemMapper;
 import com.pinyougou.mapper.TbOrderMapper;
+import com.pinyougou.mapper.TbPayLogMapper;
 import com.pinyougou.order.service.OrderService;
 import com.pinyougou.pojo.TbOrder;
 import com.pinyougou.pojo.TbOrderItem;
+import com.pinyougou.pojo.TbPayLog;
 import com.pinyougou.pojogroup.Cart;
 import com.utils.IdWorker;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +38,9 @@ public class OrderServiceImpl implements OrderService {
 
 	@Autowired
 	private TbOrderItemMapper orderItemMapper;
+
+	@Autowired
+	private TbPayLogMapper payLogMapper;
 	
 	/**
 	 * 查询全部
@@ -66,6 +72,9 @@ public class OrderServiceImpl implements OrderService {
 	public void add(TbOrder order) {
 		// 1.从缓存redis中提取购物车列表
 		List<Cart>  cartList = (List<Cart>) redisTemplate.boundHashOps("cartList").get(order.getUserId());
+
+		List<String> orderList = new ArrayList<>();
+		double total_money = 0;
 		//2.循环购物车列表添加订单
 		for (Cart cart : cartList) {
 			TbOrder tbOrder = new TbOrder();
@@ -91,11 +100,29 @@ public class OrderServiceImpl implements OrderService {
 				orderItem.setSellerId(cart.getSellerId());//商家ID
 				money+=orderItem.getTotalFee().doubleValue();
 				orderItemMapper.insert(orderItem);
+				total_money += money;
 			}
 
 			tbOrder.setPayment(new BigDecimal(money)); //合计金额
 
 			orderMapper.insert(tbOrder); //将order添加到数据库
+			orderList.add(orderId+"");
+		}
+
+		// 添加日志记录
+		if (order.getPayment().equals("1")){
+			TbPayLog payLog = new TbPayLog();
+			payLog.setOutTradeNo(idWorker.nextId()+"");
+			payLog.setCreateTime(new Date());
+			payLog.setUserId(order.getUserId()); // 用户ID
+			payLog.setOrderList(orderList.toString().replace("[",",").replace("]","")); // 订单ID串
+			payLog.setTradeState("0"); // 交易状态
+			payLog.setTotalFee((long)total_money*100); //总费用
+
+			payLogMapper.insert(payLog);
+
+			// 将支付之日志放入缓存
+			redisTemplate.boundHashOps("payLog").put(order.getUserId(),payLog);
 		}
 
 		//3.清除redis中的购物车
