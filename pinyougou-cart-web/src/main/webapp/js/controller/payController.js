@@ -20,15 +20,16 @@ app.controller('payController' ,function($scope ,payService){
         );
     }
 
-    queryPayStatus = function () {
+    //查询支付状态
+    queryPayStatus=function(){
         payService.queryPayStatus($scope.out_trade_no).success(
-            function (respose) {
-                if (respose.success){
-                    location.href="paysuccess.html"
-                } else {
-                    location.href="payfail.html"
+            function(response){
+                if(response.success){
+                    location.href="paysuccess.html";
+                }else{
+                    location.href="payfail.html";
                 }
             }
-        )
+        );
     }
 });
