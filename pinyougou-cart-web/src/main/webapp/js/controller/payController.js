@@ -14,7 +14,21 @@ app.controller('payController' ,function($scope ,payService){
                         level:'H'
                     }
                 );
+                // 查询支付状态
+                queryPayStatus();
             }
         );
+    }
+
+    queryPayStatus = function () {
+        payService.queryPayStatus($scope.out_trade_no).success(
+            function (respose) {
+                if (respose.success){
+                    location.href="paysuccess.html"
+                } else {
+                    location.href="payfail.html"
+                }
+            }
+        )
     }
 });
