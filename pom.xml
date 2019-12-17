@@ -302,5 +302,7 @@
 		<module>pinyougou-order-service</module>
         <module>pinyougou-pay-interface</module>
 		<module>pinyougou-pay-service</module>
+        <module>pinyougou-seckill-interface</module>
+		<module>pinyougou-seckill-service</module>
 	</modules>
 </project>
