@@ -3,6 +3,7 @@ import java.util.List;
 
 
 import com.pinyougou.pojo.TbOrder;
+import com.pinyougou.pojo.TbPayLog;
 import entity.PageResult;
 /**
  * 服务层接口
@@ -58,5 +59,12 @@ public interface OrderService {
 	 * @return
 	 */
 	public PageResult findPage(TbOrder order, int pageNum, int pageSize);
+
+	/**
+	 * 根据用户查询payLog
+	 * @param userId
+	 * @return
+	 */
+	public TbPayLog searchPayLogFromRedis(String userId);
 	
 }

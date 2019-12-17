@@ -2,9 +2,12 @@ package com.pinyougou.cart.controller;
 
 
 import com.alibaba.dubbo.config.annotation.Reference;
+import com.pinyougou.order.service.OrderService;
 import com.pinyougou.pay.service.WeixinPayService;
+import com.pinyougou.pojo.TbPayLog;
 import com.utils.IdWorker;
 import entity.Result;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,11 +21,23 @@ public class PayController {
     @Reference
     private WeixinPayService weixinPayService;
 
+    @Reference
+    private OrderService orderService;
+
+
     @RequestMapping("/createNative")
     public Map createNative(){
-        IdWorker idWorker = new IdWorker();
-        Map nativeMap = weixinPayService.createNative(String.valueOf(idWorker.nextId()), "1");
-        return nativeMap;
+        // 1.获取当前登录用户
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        //2.根据当前登录用户查询支付日志
+        TbPayLog payLog = orderService.searchPayLogFromRedis(userId);
+        if (payLog != null){
+            //3.调用微信支付接口
+            Map nativeMap = weixinPayService.createNative(payLog.getOutTradeNo(), payLog.getTotalFee()+"");
+            return nativeMap;
+        }else {
+            return new HashMap();
+        }
     }
 
     @RequestMapping("/queryPayStatus")

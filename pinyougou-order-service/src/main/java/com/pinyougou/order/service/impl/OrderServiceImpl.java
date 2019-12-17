@@ -73,8 +73,9 @@ public class OrderServiceImpl implements OrderService {
 		// 1.从缓存redis中提取购物车列表
 		List<Cart>  cartList = (List<Cart>) redisTemplate.boundHashOps("cartList").get(order.getUserId());
 
-		List<String> orderList = new ArrayList<>();
-		double total_money = 0;
+		List<String> orderIdList=new ArrayList();//订单ID列表
+		double total_money=0;//总金额 （元）
+
 		//2.循环购物车列表添加订单
 		for (Cart cart : cartList) {
 			TbOrder tbOrder = new TbOrder();
@@ -105,24 +106,24 @@ public class OrderServiceImpl implements OrderService {
 
 			tbOrder.setPayment(new BigDecimal(money)); //合计金额
 
-			orderMapper.insert(tbOrder); //将order添加到数据库
-			orderList.add(orderId+"");
+			orderIdList.add(orderId+"");//添加到订单列表
+			total_money+=money;//累加到总金额
 		}
 
-		// 添加日志记录
-		if (order.getPayment().equals("1")){
-			TbPayLog payLog = new TbPayLog();
-			payLog.setOutTradeNo(idWorker.nextId()+"");
-			payLog.setCreateTime(new Date());
-			payLog.setUserId(order.getUserId()); // 用户ID
-			payLog.setOrderList(orderList.toString().replace("[",",").replace("]","")); // 订单ID串
-			payLog.setTradeState("0"); // 交易状态
-			payLog.setTotalFee((long)total_money*100); //总费用
+		//添加支付日志
+		if("1".equals(order.getPaymentType())){
+			TbPayLog payLog=new TbPayLog();
 
+			payLog.setOutTradeNo(idWorker.nextId()+"");//支付订单号
+			payLog.setCreateTime(new Date());
+			payLog.setUserId(order.getUserId());//用户ID
+			payLog.setOrderList(orderIdList.toString().replace("[", "").replace("]", ""));//订单ID串
+			payLog.setTotalFee( (long)( total_money*100)   );//金额（分）
+			payLog.setTradeState("0");//交易状态
+			payLog.setPayType("1");//微信
 			payLogMapper.insert(payLog);
 
-			// 将支付之日志放入缓存
-			redisTemplate.boundHashOps("payLog").put(order.getUserId(),payLog);
+			redisTemplate.boundHashOps("payLog").put(order.getUserId(), payLog);//放入缓存
 		}
 
 		//3.清除redis中的购物车
@@ -222,5 +223,11 @@ public class OrderServiceImpl implements OrderService {
 		Page<TbOrder> page= (Page<TbOrder>)orderMapper.selectByExample(example);		
 		return new PageResult(page.getTotal(), page.getResult());
 	}
-	
+
+    @Override
+    public TbPayLog searchPayLogFromRedis(String userId) {
+        TbPayLog payLog = (TbPayLog) redisTemplate.boundHashOps("payLog").get(userId);
+        return payLog;
+    }
+
 }
