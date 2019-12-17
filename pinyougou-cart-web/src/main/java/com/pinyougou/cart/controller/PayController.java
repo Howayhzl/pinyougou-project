@@ -52,6 +52,8 @@ public class PayController {
             }
             if (map.get("trade_state").equals("SUCCESS")){
                 result = new Result("支付成功",true);
+                // 支付成功后更新订单状态
+                orderService.updateOrderStatus(out_trade_no,map.get("transaction_id")); // 修改订单状态
                 break;
             }
 
