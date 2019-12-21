@@ -1,6 +1,8 @@
 package com.pinyougou.seckill.service.impl;
 import java.util.Date;
 import java.util.List;
+
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.github.pagehelper.Page;
@@ -12,6 +14,7 @@ import com.pinyougou.pojo.TbSeckillGoodsExample.Criteria;
 import com.pinyougou.seckill.service.SeckillGoodsService;
 
 import entity.PageResult;
+import org.springframework.data.redis.core.RedisTemplate;
 
 /**
  * 服务实现层
@@ -103,16 +106,29 @@ public class SeckillGoodsServiceImpl implements SeckillGoodsService {
 		return new PageResult(page.getTotal(), page.getResult());
 	}
 
+	@Autowired
+	private RedisTemplate redisTemplate;
+
 	@Override
 	public List<TbSeckillGoods> findList() {
-		TbSeckillGoodsExample example = new TbSeckillGoodsExample();
-		Criteria criteria = example.createCriteria();
-		criteria.andStatusEqualTo("1");//审核通过
-		criteria.andStockCountGreaterThan(0);//剩余库存大于0
-		/*criteria.andStartTimeLessThanOrEqualTo(new Date());//开始时间小于等于当前时间
-		criteria.andEndTimeGreaterThan(new Date());//结束时间大于当前时间*/
-		List<TbSeckillGoods> tbSeckillGoods = seckillGoodsMapper.selectByExample(example);
-		return tbSeckillGoods;
+		List<TbSeckillGoods> seckillGoodsList =redisTemplate.boundHashOps("seckillGoods").values();
+		if (CollectionUtils.isEmpty(seckillGoodsList)){
+			TbSeckillGoodsExample example = new TbSeckillGoodsExample();
+			Criteria criteria = example.createCriteria();
+			criteria.andStatusEqualTo("1");//审核通过
+			criteria.andStockCountGreaterThan(0);//剩余库存大于0
+			/*criteria.andStartTimeLessThanOrEqualTo(new Date());//开始时间小于等于当前时间
+			criteria.andEndTimeGreaterThan(new Date());//结束时间大于当前时间*/
+			seckillGoodsList= seckillGoodsMapper.selectByExample(example);
+			// 将列表封装入缓存
+			for (TbSeckillGoods seckillGoods : seckillGoodsList) {
+				redisTemplate.boundHashOps("seckillGoods").put(seckillGoods.getId(), seckillGoods);
+			}
+			System.out.println("从数据库中读取数据");
+		}else {
+			System.out.println("从缓存中读取数据");
+		}
+		return seckillGoodsList;
 	}
 
 }
