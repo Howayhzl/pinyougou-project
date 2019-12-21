@@ -15,8 +15,8 @@ public interface SeckillOrderService {
 	 * @return
 	 */
 	public List<TbSeckillOrder> findAll();
-	
-	
+
+
 	/**
 	 * 返回分页列表
 	 * @return

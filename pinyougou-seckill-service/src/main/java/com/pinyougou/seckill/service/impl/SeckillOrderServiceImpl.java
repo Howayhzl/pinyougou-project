@@ -23,7 +23,7 @@ public class SeckillOrderServiceImpl implements SeckillOrderService {
 
 	@Autowired
 	private TbSeckillOrderMapper seckillOrderMapper;
-	
+
 	/**
 	 * 查询全部
 	 */
@@ -115,5 +115,5 @@ public class SeckillOrderServiceImpl implements SeckillOrderService {
 		Page<TbSeckillOrder> page= (Page<TbSeckillOrder>)seckillOrderMapper.selectByExample(example);		
 		return new PageResult(page.getTotal(), page.getResult());
 	}
-	
+
 }

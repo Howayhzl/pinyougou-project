@@ -11,13 +11,6 @@ import entity.PageResult;
 public interface SeckillGoodsService {
 
 	/**
-	 * 返回全部列表
-	 * @return
-	 */
-	public List<TbSeckillGoods> findAll();
-	
-	
-	/**
 	 * 返回分页列表
 	 * @return
 	 */
@@ -57,5 +50,11 @@ public interface SeckillGoodsService {
 	 * @return
 	 */
 	public PageResult findPage(TbSeckillGoods seckillGoods, int pageNum, int pageSize);
+
+	/**
+	 * 返回当前正在参与秒杀的商品列表
+	 * @return
+	 */
+	public List<TbSeckillGoods> findList();
 	
 }

@@ -4,13 +4,13 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 						http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
 
-    <http pattern="/cart.html" security="none"></http>
-    <http pattern="/css/**" security="none"></http>
-    <http pattern="/js/**" security="none"></http>
-    <http pattern="/img/**" security="none"></http>
-    <http pattern="/plugins/**" security="none"></http>
-    <http pattern="/*/*.do" security="none"></http>
-    <http pattern="/*.html" security="none"></http>
+    <http pattern="/css/**" security="none"/>
+    <http pattern="/js/**" security="none"/>
+    <http pattern="/img/**" security="none"/>
+    <http pattern="/plugins/**" security="none"/>
+
+    <http pattern="/seckill-*.html" security="none"/>
+    <http pattern="/seckillGoods/*.do" security="none"/>
 
 
     <!--   entry-point-ref  入口点引用 -->
@@ -32,7 +32,7 @@
     </beans:bean>
     <beans:bean id="serviceProperties" class="org.springframework.security.cas.ServiceProperties">
         <!--service 配置自身工程的根地址+/login/cas   -->
-        <beans:property name="service" value="http://localhost:9107/login/cas"/>
+        <beans:property name="service" value="http://localhost:9109/login/cas"/>
     </beans:bean>
     <!-- CAS入口点 结束 -->
 
@@ -63,7 +63,7 @@
         <beans:property name="key" value="an_id_for_this_auth_provider_only"/>
     </beans:bean>
     <!-- 认证类 -->
-    <beans:bean id="userDetailsService" class="com.pinyougou.cart.service.UserDetailServiceImpl"/>
+    <beans:bean id="userDetailsService" class="com.pinyougou.user.service.UserDetailServiceImpl"/>
 
     <!-- 认证过滤器 结束 -->
 

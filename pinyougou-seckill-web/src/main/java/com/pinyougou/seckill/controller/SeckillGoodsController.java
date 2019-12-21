@@ -21,16 +21,7 @@ public class SeckillGoodsController {
 
 	@Reference
 	private SeckillGoodsService seckillGoodsService;
-	
-	/**
-	 * 返回全部列表
-	 * @return
-	 */
-	@RequestMapping("/findAll")
-	public List<TbSeckillGoods> findAll(){			
-		return seckillGoodsService.findAll();
-	}
-	
+
 	
 	/**
 	 * 返回全部列表
@@ -110,5 +101,14 @@ public class SeckillGoodsController {
 	public PageResult search(@RequestBody TbSeckillGoods seckillGoods, int page, int rows  ){
 		return seckillGoodsService.findPage(seckillGoods, page, rows);		
 	}
-	
+
+	/**
+	 * 当前秒杀的商品
+	 * @return
+	 */
+	@RequestMapping("/findList")
+	public List<TbSeckillGoods> findList(){
+		return seckillGoodsService.findList();
+	}
+
 }
