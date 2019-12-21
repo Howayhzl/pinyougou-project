@@ -56,5 +56,12 @@ public interface SeckillGoodsService {
 	 * @return
 	 */
 	public List<TbSeckillGoods> findList();
-	
+
+
+	/**
+	 * 根据ID获取实体(从缓存中取出)
+	 * @param id
+	 * @return
+	 */
+	public TbSeckillGoods findOneFromRedis(Long id);
 }
