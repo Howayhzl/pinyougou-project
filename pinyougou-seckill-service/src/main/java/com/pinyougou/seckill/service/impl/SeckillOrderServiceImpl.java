@@ -164,4 +164,10 @@ public class SeckillOrderServiceImpl implements SeckillOrderService {
 		System.out.println("保存订单成功redis");
 	}
 
+
+	@Override
+	public TbSeckillOrder searchOrderFromRedisByUserId(String userId) {
+		return (TbSeckillOrder)redisTemplate.boundHashOps("seckillGoods").get(userId);
+	}
+
 }
