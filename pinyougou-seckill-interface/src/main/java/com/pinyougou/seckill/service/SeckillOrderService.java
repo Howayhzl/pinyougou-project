@@ -66,7 +66,7 @@ public interface SeckillOrderService {
 	public void submitOrder(Long seckillId,String userId);
 
 	/**
-	 * 根据用户名查询秒杀订单
+	 * 从缓存中提取订单
 	 * @param userId
 	 * @return
 	 */

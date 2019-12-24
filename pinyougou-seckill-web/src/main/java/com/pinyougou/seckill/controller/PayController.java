@@ -3,11 +3,9 @@ package com.pinyougou.seckill.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.pinyougou.pay.service.WeixinPayService;
-import com.pinyougou.pojo.TbPayLog;
 import com.pinyougou.pojo.TbSeckillOrder;
 import com.pinyougou.seckill.service.SeckillOrderService;
 import entity.Result;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,7 +20,7 @@ public class PayController {
     @Reference
     private WeixinPayService weixinPayService;
 
-    @Autowired
+    @Reference
     private SeckillOrderService seckillOrderService;
 
 
@@ -30,13 +28,13 @@ public class PayController {
     public Map createNative(){
         // 1.获取当前登录用户
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-        //2.提取秒杀订单(从缓存)
+        //2.根据当前登录用户到redis查询秒杀订单
         TbSeckillOrder seckillOrder = seckillOrderService.searchOrderFromRedisByUserId(userId);
-        if (seckillOrder != null){
-            //3.调用微信支付接口
-            Map nativeMap = weixinPayService.createNative(seckillOrder.getId()+"", (long)(seckillOrder.getMoney().doubleValue()*100)+"");
-            return nativeMap;
-        }else {
+        // 判断秒杀订单是否存在
+        if (seckillOrder!=null){
+            long fen=  (long)(seckillOrder.getMoney().doubleValue()*100);//金额（分）
+            return weixinPayService.createNative(seckillOrder.getId()+"",+fen+"");
+        } else {
             return new HashMap();
         }
     }
