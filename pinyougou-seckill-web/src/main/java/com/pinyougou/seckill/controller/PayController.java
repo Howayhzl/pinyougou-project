@@ -65,7 +65,7 @@ public class PayController {
                 e.printStackTrace();
             }
             x++;
-            if (x>=2){
+            if (x>=100){
                 result = new Result("二维码超时",false);
 
                 Map<String,String> payResult = weixinPayService.closePay(out_trade_no);
