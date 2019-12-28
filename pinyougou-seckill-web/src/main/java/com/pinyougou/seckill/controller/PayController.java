@@ -41,6 +41,9 @@ public class PayController {
 
     @RequestMapping("/queryPayStatus")
     public Result queryPayStatus(String out_trade_no){
+        // 1.获取当前登录用户
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+
         Result result = null;
         int x = 0;
         while (true){
@@ -51,8 +54,8 @@ public class PayController {
             }
             if (map.get("trade_state").equals("SUCCESS")){
                 result = new Result("支付成功",true);
-                // 支付成功后更新订单状态
-               // orderService.updateOrderStatus(out_trade_no,map.get("transaction_id")); // 修改订单状态
+                // 保存订单到数据库
+                seckillOrderService.saveOrderFromRedisToDb(userId,Long.valueOf(out_trade_no),map.get("transaction_id"));
                 break;
             }
 
@@ -62,7 +65,7 @@ public class PayController {
                 e.printStackTrace();
             }
             x++;
-            if (x>=4){
+            if (x>=4000){
                 result = new Result("二维码超时",false);
                 break;
             }

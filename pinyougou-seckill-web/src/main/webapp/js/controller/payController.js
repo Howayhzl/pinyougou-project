@@ -17,7 +17,7 @@ app.controller('payController' ,function($scope ,$location,payService){
 						level:'H'
 			     });
 				 
-				 //queryPayStatus();//调用查询
+				 queryPayStatus();//调用查询
 				
 			}	
 		);	
