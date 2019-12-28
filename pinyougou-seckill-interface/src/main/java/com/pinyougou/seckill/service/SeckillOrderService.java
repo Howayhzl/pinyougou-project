@@ -71,5 +71,13 @@ public interface SeckillOrderService {
 	 * @return
 	 */
 	public TbSeckillOrder searchOrderFromRedisByUserId(String userId);
+
+	/**
+	 * 保存到数据库
+	 * @param userId
+	 * @param orderId
+	 * @param transactionId
+	 */
+	public void saveOrderFromRedisToDb(String userId,Long orderId,String transactionId);
 	
 }

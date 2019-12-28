@@ -170,4 +170,25 @@ public class SeckillOrderServiceImpl implements SeckillOrderService {
 		return (TbSeckillOrder)redisTemplate.boundHashOps("seckillGoods").get(userId);
 	}
 
+	@Override
+	public void saveOrderFromRedisToDb(String userId, Long orderId, String transactionId) {
+		// 1.从缓存中提取订单数据
+		TbSeckillOrder seckillOrder = searchOrderFromRedisByUserId(userId);
+		if (seckillOrder == null){
+			throw new RuntimeException("不存在订单");
+		}
+
+		if (seckillOrder.getId().longValue()!=orderId.longValue()){
+			throw new RuntimeException("订单号不符");
+		}
+		// 2.修改订单实体的属性
+		seckillOrder.setPayTime(new Date()); // 支付日期
+		seckillOrder.setStatus("1"); // 已支付状态
+		seckillOrder.setTransactionId(transactionId);
+		// 3.将订单存入数据库
+		seckillOrderMapper.insert(seckillOrder);
+		// 4.清除缓存中的订单
+		redisTemplate.boundHashOps("seckillGoods").delete(userId);
+	}
+
 }
