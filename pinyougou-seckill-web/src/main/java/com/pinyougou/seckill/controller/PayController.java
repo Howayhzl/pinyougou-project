@@ -65,8 +65,11 @@ public class PayController {
                 e.printStackTrace();
             }
             x++;
-            if (x>=4000){
+            if (x>=2){
                 result = new Result("二维码超时",false);
+
+                // 删除订单
+                seckillOrderService.deleteOrderFromRedis(userId,Long.valueOf(out_trade_no));
                 break;
             }
         }
