@@ -7,6 +7,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="send_message_service" />
+        <module name="pinyougou-cart-interface" />
         <module name="pinyougou-common" />
         <module name="pinyougou-page-interface" />
         <module name="pinyougou-solr-util" />
@@ -20,12 +21,12 @@
         <module name="pinyougou-user-web" />
         <module name="pinyougou-dao" />
         <module name="pinyougou-user-interface" />
-        <module name="pinyougou-cart-interface" />
+        <module name="pinyougou-task-service" />
+        <module name="pinyougou-order-interface" />
         <module name="pinyougou-pay-interface" />
         <module name="pinyougou-portal-web" />
         <module name="pinyougou-pay-service" />
         <module name="pinyougou-cart-service" />
-        <module name="pinyougou-order-interface" />
         <module name="pinyougou-search-service" />
         <module name="pinyougou-user-service" />
         <module name="pinyougou-pojo" />
@@ -69,6 +70,7 @@
       <module name="pinyougou-sellergoods-service" target="1.7" />
       <module name="pinyougou-shop-web" target="1.7" />
       <module name="pinyougou-solr-util" target="1.7" />
+      <module name="pinyougou-task-service" target="1.7" />
       <module name="pinyougou-user-interface" target="1.7" />
       <module name="pinyougou-user-service" target="1.7" />
       <module name="pinyougou-user-web" target="1.7" />

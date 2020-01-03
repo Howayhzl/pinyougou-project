@@ -5,8 +5,8 @@ import com.pinyougou.pojo.TbSeckillGoods;
 import com.pinyougou.pojo.TbSeckillGoodsExample;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.stereotype.Component;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -20,6 +20,7 @@ public class SeckillTask {
 
     @Autowired
     private RedisTemplate redisTemplate;
+
 
     @Scheduled(cron="* * * * * ?")
     public void refreshSeckillGoods(){
@@ -50,4 +51,3 @@ public class SeckillTask {
 
     }
 }
-
