@@ -22,7 +22,7 @@ public class SeckillTask {
     private RedisTemplate redisTemplate;
 
 
-    @Scheduled(cron="* * * * * ?")
+    @Scheduled(cron="0 * * * * ?")
     public void refreshSeckillGoods(){
         System.out.println("执行了秒杀商品增量更新 任务调度"+new Date());
 
@@ -49,5 +49,22 @@ public class SeckillTask {
         }
         System.out.println(".....end....");
 
+    }
+
+    @Scheduled(cron = "* * * * * ?")
+    public void removeSeckillGoods(){
+        // 查询出来缓存中的数据，扫描每条记录，判断时间，如果时间超过了截止时间，移除此记录
+        List<TbSeckillGoods> seckillGoodsList = redisTemplate.boundHashOps("seckillGoods").values();
+        System.out.println("执行了清除秒杀商品任务");
+        for (TbSeckillGoods seckillGoods : seckillGoodsList) {
+            if (seckillGoods.getEndTime().getTime()<new Date().getTime()){
+                // 同步到数据库
+                seckillGoodsMapper.updateByPrimaryKey(seckillGoods);
+                // 清除缓存
+                redisTemplate.boundHashOps("seckillGoods").delete(seckillGoods.getId());
+                System.out.println("秒杀商品"+seckillGoods.getId()+"已经过期");
+            }
+        }
+        System.out.println("执行了清除秒杀商品任务。。。。。。end");
     }
 }
